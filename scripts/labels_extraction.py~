@@ -1,0 +1,71 @@
+from xml.dom.minidom import parse
+import xml.dom.minidom
+
+'''
+===========================================================================================================
+	this section is for single xml file (change this section to update for each xml file)
+
+				Data structure = Dictionary
+		Format = Filename:[property,unroll #, status, cputime]
+===========================================================================================================
+'''
+
+def data_Structure():
+
+	#find <tag> = 'run' in the .xml files
+	runs = result.getElementsByTagName('run')
+
+	for run in runs:
+		#check if 'run' has attributes, 'name' and 'properties' and then begin the data-structure
+		if run.hasAttribute('name') and run.hasAttribute('properties'):
+			filename = run.getAttribute('name')
+			check = str(run.getAttribute('properties'))
+			unroll_7_cputime[filename] = [7]
+			unroll_7_cputime[filename].append(check)
+		#find >tag> = 'column' as the child of <tag> = 'run'
+		columns = run.getElementsByTagName('column')
+	
+		for column in columns:
+			#find value of 'status' and 'cuptime' and append to list
+			if str(column.getAttribute('title')) == 'status':
+				unroll_7_cputime[filename].append(str(column.getAttribute('value')))
+
+			if str(column.getAttribute('title')) == 'cputime':
+				#convert the value from string to float and rounding the value
+				value = column.getAttribute('value')
+				value = round(float(value[:len(value)-1]),10)
+				unroll_7_cputime[filename].append(value)	
+
+
+'''
+==========================================================================================
+				creating a list of .xml files
+==========================================================================================
+'''
+
+with open('/xml_files_cf.txt') as f:
+	content = f.readlines()
+content = [x.strip() for x in content]
+
+'''
+==========================================================================================
+	create separate dictionaries since 'dictionary[key] = list'
+		so didn't want to create a list of dictionaries
+==========================================================================================
+'''
+unroll_cputime_cf_1 = {}
+unroll_cputime_cf_2 = {}
+unroll_cputime_cf_3 = {}
+unroll_cputime_cf_4 = {}
+unroll_cputime_cf_5 = {}
+unroll_cputime_cf_6 = {}
+unroll_cputime_cf_7 = {}
+unroll_cputime_cf_8 = {}
+unroll_cputime_cf_9 = {}
+unroll_cputime_cf_10 = {}
+
+#Root of the tree
+for i in len(range(content)):
+	DOMTree = xml.dom.minidom.parse(content[i])
+	result = DOMTree.documentElement
+
