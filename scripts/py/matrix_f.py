@@ -14,6 +14,8 @@ for i in range(len(content)):
 	temp_list.append(listed)
 
 #convert the feature vector values 'string' ---> 'float'.
+'''		feature_dict = filename: [feature-vector]	
+			f_matrix = matrix of feature_vectors'''
 for i in range(len(temp_list)):
 	feature_dict[temp_list[i][0]] = map(float,temp_list[i][1:])
 	f_matrix.append(feature_dict[temp_list[i][0]])
