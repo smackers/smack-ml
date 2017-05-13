@@ -9,6 +9,8 @@ import pickle
 '''
 
 def compute_final_labels(f,min_cputime_unroll):
+	unroll_values = [1,2,4,6,8,16,32,64]
+	unroll_values = {}
 	for filename in f:
 		for i in range(len(f[filename])):
 			if f[filename][i] == 'correct' or f[filename][i] == 'wrong' or f[filename][i] == 'error':
@@ -20,9 +22,10 @@ def compute_final_labels(f,min_cputime_unroll):
 		#---------------
 		temp = min(min_cputime_unroll[filename])	#computing the min from the list above
 	
-		for i in range(len(min_cputime_unroll[filename])):	#finding the mean in the lis
+		for i in range(len(min_cputime_unroll[filename])):	#finding the mean in the list
 			if temp == min_cputime_unroll[filename][i]:
-				min_cputime_unroll[filename] = i+1	#assigning the 'index value + 1' to get the unroll
+				print i
+				min_cputime_unroll[filename] = unroll_values[i]	#assigning the 'index value + 1' to get the unroll
 				break
 		#---------------
 		'''
@@ -35,14 +38,14 @@ def compute_final_labels(f,min_cputime_unroll):
 	return min_cputime_unroll
 
 #reading the data
-g = pickle.load(open('../txt/labels_cf.txt','rb'))
-h = pickle.load(open('../txt/labels_h.txt','rb'))
+g = pickle.load(open('../txt/labels_all.txt','rb'))
 min_cputime_unroll = {}
 
 compute_final_labels(g,min_cputime_unroll)
-compute_final_labels(h,min_cputime_unroll)
 
-#print len(min_cputime_unroll)
+print min_cputime_unroll
+print len(min_cputime_unroll)
 
+#writing the final labels unroll for [min(cputime) & category == 'correct']
 with open('../txt/final_labels.txt','w') as f:
 	pickle.dump(min_cputime_unroll,f)

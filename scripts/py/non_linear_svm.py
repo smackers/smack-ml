@@ -3,11 +3,13 @@ import pickle
 import numpy as np
 import pickle
 
+
+
 files_f = pickle.load(open('../txt/list_of_features.txt','rb'))
 files_l = pickle.load(open('../txt/final_labels.txt','rb'))
+
 vector_l = []
 matrix_f = []
-k = int(raw_input("Enter the number of training samples (<= 260): "))
 
 '''		merging the feature vectors with their respective labels 	'''
 
@@ -16,6 +18,11 @@ for f in files_l:
 		matrix_f.append(files_f[f])
 		vector_l.append(files_l[f])
 
+#code working for smaller training & test dataset
+'''matrix_f = matrix_f[:100]
+vector_l = vector_l[:100]'''
+#---------------------------------------------------------------------------------
+k = int(raw_input("Enter the number of training samples (<= 7709): "))
 
 training_matrix = matrix_f[:k]
 training_labels = vector_l[:k]
@@ -26,6 +33,7 @@ clf = svm.SVC(decision_function_shape = 'ovo')
 clf.fit(training_matrix,training_labels) 
 
 T = clf.predict(test_matrix)
+#print T
 
 #convert T to a list
 T = T.tolist()
