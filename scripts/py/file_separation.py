@@ -29,12 +29,12 @@ xml_files = glob2.glob('../../xmls/*.xml')
 t = 3
 File = [0]*t
 
-#opening the necessary files with appropriate file extension
+# ---- opening the necessary files with appropriate file extension
 File[0] = open_new_file('../txt/c_files.txt',2)
 File[1] = open_new_file('../txt/i_files.txt',2)
 File[2] = open_new_file('../txt/xml_files.txt',2)
 
-#WRITING all the *.c filenames INTO c_files.txt
+# ---- WRITING all the *.c filenames INTO c_files.txt
 if c_files != None:
 	p = 1
 	for files in c_files:
@@ -42,7 +42,7 @@ if c_files != None:
 		File[p-1].write(files)
 		File[p-1].write('\n')
 
-#WRITING all the *.i filenames INTO i_files.txt
+# ---- WRITING all the *.i filenames INTO i_files.txt
 if i_files != None:
 	p = 2
 	for files in i_files:
@@ -50,13 +50,13 @@ if i_files != None:
 		File[p-1].write(files)
 		File[p-1].write('\n') 
 
-#WRITING all the *.xml filenames INTO xml_files.txt
+# ---- WRITING all the *.xml filenames INTO xml_files.txt
 if xml_files != None:
 	p = 3
 	for files in xml_files:
 		File[p-1].write(files)
 		File[p-1].write('\n')
 
-#closing all the open files
+# ---- closing all the open files
 for i in range(t):
 	File[i].close()
