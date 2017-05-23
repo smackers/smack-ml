@@ -92,6 +92,8 @@ elif t == 2:
 
 	b1 = reduce(lambda x, y: x+y, accuracy_non_linear)/len(accuracy_non_linear)
 	b2 = reduce(lambda x, y: x+y, accuracy_linear)/len(accuracy_linear)
+	print accuracy_non_linear
+	print accuracy_linear
 	print "Accuracy for Non-linear SVM = {0}%%".format(b1)
 	print "Accuracy for linear SVM = {0}%%".format(b2)
 
@@ -112,6 +114,8 @@ elif t == 3:
 	
 	b1 = reduce(lambda x, y: x+y, accuracy_non_linear)/len(accuracy_non_linear)
 	b2 = reduce(lambda x, y: x+y, accuracy_linear)/len(accuracy_linear)
+	print accuracy_non_linear
+	print accuracy_linear
 	print "Accuracy for Non-linear SVM = {0}%%".format(b1)
 	print "Accuracy for linear SVM = {0}%%".format(b2)
 
@@ -126,4 +130,4 @@ elif t == 4:
 	print "Accuracy for linear SVM = {0}%%".format(a2)
 
 else:
-	print "Error: Accepted values (1,2,3). Check your selected value "
+	print "Error: Accepted values (1,2,3,4). Check your selected value "

@@ -65,7 +65,7 @@ matrix_f = pickle.load(open("../txt/f_matrix.txt","rb"))
 print """-----------------Following are the test case options:------------
 1. Run only 1 iteration
 2. Run 'x' # of runs on training data with size 'K'
-3. Run experiment on 8 different values of 'k'
+3. Run experiment on GAP DEPENDENT values of 'k'
 4. Overfitting
 """
 t = int(raw_input("Enter the test case you want to run: "))
@@ -109,11 +109,11 @@ elif t == 3:
 		a1, a2 = analyzing(te_l, T, S)
 		accuracy_non_linear.append(a1)
 		accuracy_linear.append(a2)
-
-	print accuracy_non_linear, accuracy_linear
 	
 	b1 = reduce(lambda x, y: x+y, accuracy_non_linear)/len(accuracy_non_linear)
 	b2 = reduce(lambda x, y: x+y, accuracy_linear)/len(accuracy_linear)
+	print accuracy_non_linear
+	print accuracy_linear
 	print "Accuracy for Non-linear SVM = {0}%%".format(b1)
 	print "Accuracy for linear SVM = {0}%%".format(b2)
 
@@ -128,4 +128,4 @@ elif t == 4:
 	print "Accuracy for linear SVM = {0}%%".format(a2)
 
 else:
-	print "Error: Accepted values (1,2,3). Check your selected value "
+	print "Error: Accepted values (1,2,3,4). Check your selected value "

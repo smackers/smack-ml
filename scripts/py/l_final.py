@@ -33,7 +33,7 @@ def compute_final_labels(f,min_cputime_unroll):
 			k = min_cputime_unroll[filename].index(temp)
 			min_cputime_unroll[filename] = unroll_values[k]
 		else:
-			min_cputime_unroll[filename] = max(unroll_values)
+			min_cputime_unroll[filename] = 0
 	
 	return min_cputime_unroll
 
