@@ -1,6 +1,7 @@
 import pickle, random
 from sklearn import svm
 import numpy as np
+from sklearn.ensemble import RandomForestClassifier
 
 #-----------------------------------------------------------------------------------------------------
 def random_sampling(matrix_fes):
@@ -36,28 +37,38 @@ def classification(tr_features,tr_labels,te_features):
 	lin_clf.fit(tr_features,tr_labels)
 	S = lin_clf.predict(te_features)
 
+	# ---- Random Forest 
+	forest_clf = RandomForestClassifier(n_jobs = 2)
+	forest_clf.fit(tr_features,tr_labels)
+	Z = forest_clf.predict(te_features)
+
 	#----convert T to a list
 	T = T.tolist()
 	S = S.tolist()
+	Z = Z.tolist()
 
-	return T, S
+	return T, S, Z
 
-def analyzing(te_labels, T, S):
+def analyzing(te_labels, T, S, Z):
 	
 	#---- calculating accuracy
 	count1 = 0.0
 	count2 = 0.0
+	count3 = 0.0
 	#check for accuracy i.e. correct predictions
 	for i in range(len(te_labels)):
 		if te_labels[i] == T[i]:
 			count1 += 1
 		if te_labels[i] == S[i]:
 			count2 += 1
+		if te_labels[i] == Z[i]:
+			count3 += 1
 
 	accuracy1 = count1/len(te_labels)*100
 	accuracy2 = count2/len(te_labels)*100
-	
-	return accuracy1, accuracy2
+	accuracy3 = count3/len(te_labels)*100
+
+	return accuracy1, accuracy2, accuracy3
 
 #-----------------------------------------------------------------------------------------------
 matrix_f = pickle.load(open("../txt/f_matrix.txt","rb"))
@@ -73,29 +84,35 @@ t = int(raw_input("Enter the test case you want to run: "))
 if t == 1:
 	k = int(raw_input("Enter the number of training samples (<= 7671): "))
 	tr_f, tr_l, te_f, te_l = picking_data(matrix_f,k)
-	T, S = classification(tr_f,tr_l,te_f)
-	a1, a2 = analyzing(te_l, T, S)
+	T, S, Z = classification(tr_f,tr_l,te_f)
+	a1, a2,a3 = analyzing(te_l, T, S, Z)
 	print "Accuracy for Non-linear SVM = {0}%%".format(a1)
 	print "Accuracy for linear SVM = {0}%%".format(a2)
+	print "Accuracy for Random forest classifier = {0}%%".format(a3)
 
 elif t == 2:
 	k = int(raw_input("Enter the number of training samples (<= 7671): "))
 	x = int(raw_input("Enter the number of iterations: "))
 	accuracy_non_linear = []
 	accuracy_linear = []
+	accuracy_forest = []
 	for i in range(x):
 		tr_f, tr_l, te_f, te_l = picking_data(matrix_f,k)
-		T, S = classification(tr_f,tr_l,te_f)
-		a1, a2 = analyzing(te_l, T, S)
+		T, S, Z = classification(tr_f,tr_l,te_f)
+		a1, a2,a3 = analyzing(te_l, T, S, Z)
 		accuracy_non_linear.append(a1)
 		accuracy_linear.append(a2)
+		accuracy_forest.append(A3)
 
 	b1 = reduce(lambda x, y: x+y, accuracy_non_linear)/len(accuracy_non_linear)
 	b2 = reduce(lambda x, y: x+y, accuracy_linear)/len(accuracy_linear)
+	b3 = reduce(lambda x, y: x+y, accuracy_forest)/len(accuracy_forest)
 	print accuracy_non_linear
 	print accuracy_linear
+	print accuracy_forest
 	print "Accuracy for Non-linear SVM = {0}%%".format(b1)
 	print "Accuracy for linear SVM = {0}%%".format(b2)
+	print "Accuracy for Random forest classifier = {0}%%".format(b3)
 
 elif t == 3:
 	z = int(raw_input("Enter the gap of training set size: "))
@@ -105,29 +122,35 @@ elif t == 3:
 	
 	accuracy_non_linear = []
 	accuracy_linear = []
+	accuracy_forest = []
 	for j in range(len(p)):
 		tr_f, tr_l, te_f, te_l = picking_data(matrix_f,p[j])
-		T, S = classification(tr_f,tr_l,te_f)
-		a1, a2 = analyzing(te_l, T, S)
+		T, S, Z = classification(tr_f,tr_l,te_f)
+		a1, a2, a3 = analyzing(te_l, T, S, Z)
 		accuracy_non_linear.append(a1)
 		accuracy_linear.append(a2)
+		accuracy_forest.append(a3)
 	
 	b1 = reduce(lambda x, y: x+y, accuracy_non_linear)/len(accuracy_non_linear)
 	b2 = reduce(lambda x, y: x+y, accuracy_linear)/len(accuracy_linear)
+	b3 = reduce(lambda x, y: x+y, accuracy_forest)/len(accuracy_forest)
 	print accuracy_non_linear
 	print accuracy_linear
+	print accuracy_forest
 	print "Accuracy for Non-linear SVM = {0}%%".format(b1)
 	print "Accuracy for linear SVM = {0}%%".format(b2)
+	print "Accuracy for Random forest classifier = {0}%%".format(b3)
 
 elif t == 4:
 	k = len(matrix_f)
 	tr_f, tr_l, te_f, te_l = picking_data(matrix_f,k)
 	te_f = tr_f
 	te_l = tr_l
-	T, S = classification(tr_f,tr_l,te_f)
-	a1, a2 = analyzing(te_l, T, S)
+	T, S, Z = classification(tr_f,tr_l,te_f)
+	a1, a2, a3 = analyzing(te_l, T, S, Z)
 	print "Accuracy for Non-linear SVM = {0}%%".format(a1)
 	print "Accuracy for linear SVM = {0}%%".format(a2)
+	print "Accuracy for Random forest classifier = {0}%%".format(a3)
 
 else:
 	print "Error: Accepted values (1,2,3,4). Check your selected value "
