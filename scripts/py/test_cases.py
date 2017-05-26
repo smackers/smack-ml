@@ -24,6 +24,9 @@ def picking_data(matrix_fs,k):
 		te_features.append(te_data[i][:-1])
 		te_labels.append(te_data[i][-1])
 
+	#print tr_labels
+	print te_labels
+
 	return tr_features, tr_labels, te_features, te_labels
 
 def classification(tr_features,tr_labels,te_features):
@@ -37,7 +40,7 @@ def classification(tr_features,tr_labels,te_features):
 	lin_clf.fit(tr_features,tr_labels)
 	S = lin_clf.predict(te_features)
 
-	# ---- Random Forest 
+	# ---- Random Forest classification
 	forest_clf = RandomForestClassifier(n_jobs = 2)
 	forest_clf.fit(tr_features,tr_labels)
 	Z = forest_clf.predict(te_features)
@@ -70,6 +73,22 @@ def analyzing(te_labels, T, S, Z):
 
 	return accuracy1, accuracy2, accuracy3
 
+# ---- print average accuracy when # of pass = x 
+def print_average(accuracy_non_linear, accuracy_linear, accuracy_forest):
+	b1 = reduce(lambda x, y: x+y, accuracy_non_linear)/len(accuracy_non_linear)
+	b2 = reduce(lambda x, y: x+y, accuracy_linear)/len(accuracy_linear)
+	b3 = reduce(lambda x, y: x+y, accuracy_forest)/len(accuracy_forest)
+
+	print "Accuracy for Non-linear SVM = {0}%%".format(b1)
+	print "Accuracy for linear SVM = {0}%%".format(b2)
+	print "Accuracy for Random forest classifier = {0}%%".format(b3)
+
+# ---- print accuracy when # of pass = 1
+def print_results(a1,a2,a3):
+	print "Accuracy for Non-linear SVM = {0}%%".format(a1)
+	print "Accuracy for linear SVM = {0}%%".format(a2)
+	print "Accuracy for Random forest classifier = {0}%%".format(a3)
+
 #-----------------------------------------------------------------------------------------------
 matrix_f = pickle.load(open("../txt/f_matrix.txt","rb"))
 
@@ -86,9 +105,7 @@ if t == 1:
 	tr_f, tr_l, te_f, te_l = picking_data(matrix_f,k)
 	T, S, Z = classification(tr_f,tr_l,te_f)
 	a1, a2,a3 = analyzing(te_l, T, S, Z)
-	print "Accuracy for Non-linear SVM = {0}%%".format(a1)
-	print "Accuracy for linear SVM = {0}%%".format(a2)
-	print "Accuracy for Random forest classifier = {0}%%".format(a3)
+	print_results(a1,a2,a3)
 
 elif t == 2:
 	k = int(raw_input("Enter the number of training samples (<= 7671): "))
@@ -104,15 +121,7 @@ elif t == 2:
 		accuracy_linear.append(a2)
 		accuracy_forest.append(A3)
 
-	b1 = reduce(lambda x, y: x+y, accuracy_non_linear)/len(accuracy_non_linear)
-	b2 = reduce(lambda x, y: x+y, accuracy_linear)/len(accuracy_linear)
-	b3 = reduce(lambda x, y: x+y, accuracy_forest)/len(accuracy_forest)
-	print accuracy_non_linear
-	print accuracy_linear
-	print accuracy_forest
-	print "Accuracy for Non-linear SVM = {0}%%".format(b1)
-	print "Accuracy for linear SVM = {0}%%".format(b2)
-	print "Accuracy for Random forest classifier = {0}%%".format(b3)
+	print_average(accuracy_non_linear,accuracy_linear,accuracy_forest)
 
 elif t == 3:
 	z = int(raw_input("Enter the gap of training set size: "))
@@ -131,15 +140,7 @@ elif t == 3:
 		accuracy_linear.append(a2)
 		accuracy_forest.append(a3)
 	
-	b1 = reduce(lambda x, y: x+y, accuracy_non_linear)/len(accuracy_non_linear)
-	b2 = reduce(lambda x, y: x+y, accuracy_linear)/len(accuracy_linear)
-	b3 = reduce(lambda x, y: x+y, accuracy_forest)/len(accuracy_forest)
-	print accuracy_non_linear
-	print accuracy_linear
-	print accuracy_forest
-	print "Accuracy for Non-linear SVM = {0}%%".format(b1)
-	print "Accuracy for linear SVM = {0}%%".format(b2)
-	print "Accuracy for Random forest classifier = {0}%%".format(b3)
+	print_average(accuracy_non_linear,accuracy_linear,accuracy_forest)
 
 elif t == 4:
 	k = len(matrix_f)
@@ -148,9 +149,7 @@ elif t == 4:
 	te_l = tr_l
 	T, S, Z = classification(tr_f,tr_l,te_f)
 	a1, a2, a3 = analyzing(te_l, T, S, Z)
-	print "Accuracy for Non-linear SVM = {0}%%".format(a1)
-	print "Accuracy for linear SVM = {0}%%".format(a2)
-	print "Accuracy for Random forest classifier = {0}%%".format(a3)
+	print_results(a1,a2,a3)
 
 else:
 	print "Error: Accepted values (1,2,3,4). Check your selected value "
