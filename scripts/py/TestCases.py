@@ -111,12 +111,12 @@ class Algorithms(object):
 		t = int(raw_input("Enter the test case you want to run: "))
 
 		if t == 1:
-			k = int(raw_input("Enter the number of training samples (<= 7707): "))
+			k = int(raw_input("Enter the number of training samples (<= 7664): "))
 			a1,a2,a3 = self.Just(matrix_f,k)
 			self.PrintResults(a1,a2,a3)
 
 		elif t == 2:
-			k = int(raw_input("Enter the number of training samples (<= 7671): "))
+			k = int(raw_input("Enter the number of training samples (<= 7664): "))
 			x = int(raw_input("Enter the number of iterations: "))
 			accuracy_non_linear = []
 			accuracy_linear = []
@@ -132,7 +132,7 @@ class Algorithms(object):
 		elif t == 3:
 			z = int(raw_input("Enter the gap of training set size: "))
 			p = []
-			for i in range(4000,7501,z):
+			for i in range(5500,7501,z):
 				p.append(i)
 	
 			accuracy_non_linear = []
