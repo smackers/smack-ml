@@ -4,6 +4,7 @@ import Matrix
 import pickle
 import TestCases
 
+# --- Setting the diFlag value
 def FlagVal(filename):
 	if 'di_file_on' in filename:
 		code = 0
@@ -12,7 +13,7 @@ def FlagVal(filename):
 	return code
 
 
-xml_1 = glob2.glob('../../xmls/di_flag_on/*.xml') #make this a function parameter
+xml_1 = glob2.glob('../../xmls/di_flag_on/*.xml')
 xml_2 = glob2.glob('../../xmls/di_flag_off/*.xml')
 
 AllXml = xml_1 + xml_2
@@ -28,7 +29,7 @@ for filen in AllXml:
 	CputimeAll = tempL1.xmlTree(code,filen,CputimeAll)
 
 LabelMinCputime = {}
-LabelMinCputime = tempL1.compute_final_labels(CputimeAll,LabelMinCputime,di_flag)
+LabelMinCputime = tempL1.ComputeFinalLabels(CputimeAll,LabelMinCputime,di_flag)
 
 #loading the feature dictionary
 Features = pickle.load(open('../txt/FinalFeatures.txt','r'))
@@ -37,6 +38,6 @@ Features = pickle.load(open('../txt/FinalFeatures.txt','r'))
 pass the feature dict and label dict to the matrix function'''
 
 
-ResultMatrix = fm1.EquationAxEqualsB(Features,LabelMinCputime)
+ResultMatrix = fm1.FeatureAndLabelMatrix(Features,LabelMinCputime)
 print len(ResultMatrix)
-tc1.Testing(ResultMatrix)
+tc1.TestingAlgorithmResults(ResultMatrix)

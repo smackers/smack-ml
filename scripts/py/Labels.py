@@ -26,13 +26,13 @@ class GenerateLabel(object):
 
 				if filename in temp_dict:
 					temp_dict[filename].append(code)
-				else:			
+				else:
 					temp_dict[filename] = []
 					temp_dict[filename].append(code)
 
 			# ---- find <tag> = 'column' as the child of <tag> = 'run'
 			columns = run.getElementsByTagName('column')
-		
+
 			for column in columns:
 				if str(column.getAttribute('title')) == 'status':
 					temp_dict[filename].append(str(column.getAttribute('value')))
@@ -42,28 +42,28 @@ class GenerateLabel(object):
 					# ---- convert the value from string to float and rounding the value
 					value = str(column.getAttribute('value'))
 					value = round(float(value[:len(value)-1]),10)
-			
+
 				if str(column.getAttribute('title')) == 'category':
 					face_value = str(column.getAttribute('value'))
-				
+
 					if face_value == 'correct':
 						temp_dict[filename].append(value)
 					else:
 						temp_dict[filename].append(500000)	#face_value = ('wrong' || 'error')
 					temp_dict[filename].append(face_value)
 
-		return temp_dict	
+		return temp_dict
 
-	
+
 	'''
-		Purpose: using the 'labels_all.txt' file and computing the unroll with min(cputime) 
+		Purpose: using the 'labels_all.txt' file and computing the unroll with min(cputime)
 		and 'status' == 'correct' meaning the correct label.
 
 		min_cputime = {filename: unroll for min(cputime)}
 	'''
 
 	# ---- returns a dictionary with filename & the best possible unroll (based on min(cputime))
-	def compute_final_labels(self,f,min_cputime,testLength):
+	def ComputeFinalLabels(self,f,min_cputime,testLength):
 		for filename in f:
 			# ---- initialization
 			if filename not in min_cputime:
@@ -72,14 +72,14 @@ class GenerateLabel(object):
 			for i in range(len(f[filename])):
 				if f[filename][i] == 'correct' or f[filename][i] == 'wrong' or f[filename][i] == 'error':
 					t = f[filename][i-3]	#unroll value for the above condition
-				
+
 					# ---- making sure that only the min cputime for each unroll is appended to the list
 					for j in range(len(testLength)):
 						if t == testLength[j]:
 							new_min = min_cputime[filename][j]
-							if f[filename][i-1] < new_min: 
+							if f[filename][i-1] < new_min:
 								min_cputime[filename][j] = f[filename][i-1]
-							
+
 			temp = min(min_cputime[filename])	#compute the min_cputime
 
 			# ---- check if there is a min_cputime: if not, then assign the highest unroll value by default
@@ -88,5 +88,5 @@ class GenerateLabel(object):
 				min_cputime[filename] = testLength[k]
 			else:
 				min_cputime[filename] = 0
-	
+
 		return min_cputime

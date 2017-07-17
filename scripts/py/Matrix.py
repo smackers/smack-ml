@@ -3,7 +3,7 @@ class FinalMatrix(object):
 		pass
 
 	'''Purpose: creating the matrix with features & labels'''
-	def EquationAxEqualsB(self,files_f,files_l):
+	def FeatureAndLabelMatrix(self,files_f,files_l):
 		vector_l = []
 		matrix_f = []
 

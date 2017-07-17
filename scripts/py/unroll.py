@@ -25,7 +25,7 @@ def UnrollVal(filename):
 		unroll_code = 64
 	return unroll_code
 
-# ---- 
+# ----
 tempL0 = Labels.GenerateLabel()
 fm0 = Matrix.FinalMatrix()
 tc0 = TestCases.Algorithms()
@@ -40,7 +40,7 @@ for filen in xml_files:
 	CputimeAll = tempL0.xmlTree(code,filen,CputimeAll)
 
 LabelsMinCputime = {}
-LabelsMinCputime = tempL0.compute_final_labels(CputimeAll,LabelsMinCputime,unroll)
+LabelsMinCputime = tempL0.ComputeFinalLabels(CputimeAll,LabelsMinCputime,unroll)
 
 #loading the feature dictionary
 Features = pickle.load(open('../txt/FinalFeatures.txt','r'))
@@ -49,7 +49,6 @@ Features = pickle.load(open('../txt/FinalFeatures.txt','r'))
 pass the feature dict and label dict to the matrix function'''
 
 
-ResultMatrix = fm0.EquationAxEqualsB(Features,LabelsMinCputime)
-print len(ResultMatrix)
-tc0.Testing(ResultMatrix)
-
+ResultMatrix = fm0.FeatureAndLabelMatrix(Features,LabelsMinCputime)
+#print len(ResultMatrix)
+tc0.TestingAlgorithmResults(ResultMatrix)

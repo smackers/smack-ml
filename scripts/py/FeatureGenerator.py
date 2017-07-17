@@ -15,9 +15,6 @@ i_files = glob2.glob('../../../data/c/**/*.i')
 filenames = c_files + i_files
 #print type(c_files_merged)
 
-#fs.write_new_file(open('../txt/c_files.txt','w'),c_files_merged,8)
-
-
 # ---- (uncomment this section for) generating all features from scratch
 for filename in filenames:
 	filename = '../../..'+filename

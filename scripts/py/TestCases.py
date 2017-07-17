@@ -18,7 +18,7 @@ class Algorithms(object):
 		tr_data = matrix_fs[:k]; te_data = matrix_fs[k:]
 		tr_features = []; tr_labels = []
 		te_features = []; te_labels = []
-	
+
 		for i in range(len(tr_data)):
 			tr_features.append(tr_data[i][:-1])
 			tr_labels.append(tr_data[i][-1])
@@ -53,7 +53,7 @@ class Algorithms(object):
 		return T, S, Z
 
 	def ResultAnalysis(self,te_labels, T, S, Z):
-	
+
 		#---- calculating accuracy
 		count1 = 0.0
 		count2 = 0.0
@@ -73,7 +73,7 @@ class Algorithms(object):
 
 		return accuracy1, accuracy2, accuracy3
 
-	# ---- print average accuracy when # of pass = x 
+	# ---- print average accuracy when # of pass = x
 	def PrintAverage(self,accuracy_non_linear, accuracy_linear, accuracy_forest):
 		b1 = reduce(lambda x, y: x+y, accuracy_non_linear)/len(accuracy_non_linear)
 		b2 = reduce(lambda x, y: x+y, accuracy_linear)/len(accuracy_linear)
@@ -97,10 +97,10 @@ class Algorithms(object):
 		T, S, Z = self.ClassificationAlgorithms(train_features,train_labels,test_features)
 		a1, a2,a3 = self.ResultAnalysis(test_labels, T, S, Z)
 		return a1,a2,a3
-		
+
 
 	#-----------------------------------------------------------------------------------------------
-	def Testing(self,matrix_f):
+	def TestingAlgorithmResults(self,matrix_f):
 
 		print """-----------------Following are the test case options:------------
 		1. Run only 1 iteration
@@ -134,7 +134,7 @@ class Algorithms(object):
 			p = []
 			for i in range(5500,7501,z):
 				p.append(i)
-	
+
 			accuracy_non_linear = []
 			accuracy_linear = []
 			accuracy_forest = []
@@ -143,7 +143,7 @@ class Algorithms(object):
 				accuracy_non_linear.append(a1)
 				accuracy_linear.append(a2)
 				accuracy_forest.append(a3)
-	
+
 			self.PrintAverage(accuracy_non_linear,accuracy_linear,accuracy_forest)
 
 		elif t == 4:
