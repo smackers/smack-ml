@@ -20,6 +20,9 @@ class FeatureGeneration(object):
 		output_file = '../txt/features_tool2.txt'
 		subprocess.call(['bash','../sh/tool2.sh',input_file,output_file])
 
+	def Filesize(self,input_file):
+			subproces.call(input_file)
+
 	#Purpose: Create a dictionary with a type-match key as labels
 	def Formatting(self,content, n):
 		temp_list = []

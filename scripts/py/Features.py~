@@ -12,19 +12,19 @@ class FeatureGeneration(object):
 
 	#Purpose: Use tool1 (Yulia) and too2 (Thomas) to generate feature vectors of length 20 and 13 respectively
 	def RunTool1(self,input_file):
-		output_roles = '../txt/features_tool10.txt'
-		output_metrics = '../txt/output_metrics10.txt'
+		output_roles = '../txt/features_tool1.txt'
+		output_metrics = '../txt/output_metrics1.txt'
 		subprocess.call(['bash','../sh/tool1.sh',input_file,output_roles,output_metrics])
 
 	def RunTool2(self,input_file):
-		filename_t2 = '../txt/features_tool20.txt'
+		output_file = '../txt/features_tool2.txt'
 		subprocess.call(['bash','../sh/tool2.sh',input_file,output_file])
 
 	#Purpose: Create a dictionary with a type-match key as labels
 	def Formatting(self,content, n):
 		temp_list = []
 		dic = {}
-		
+
 		# ---- list of list containing the filename & features vectors
 		if n == 14761:
 			for i in range(n):
