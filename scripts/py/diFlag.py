@@ -15,8 +15,7 @@ def FlagVal(filename):
 
 xml_1 = glob2.glob('../../xmls/di_flag_on/*.xml')
 xml_2 = glob2.glob('../../xmls/di_flag_off/*.xml')
-
-AllXml = xml_1 + xml_2
+AllXml = xml_1 + xml_final_2
 
 tempL1 = Labels.GenerateLabel()
 fm1 = Matrix.FinalMatrix()
