@@ -6,21 +6,18 @@ import TestCases
 
 # --- Setting the diFlag value
 def FlagVal(filename):
-	if 'di_file_on' in filename:
-		code = 2
-	else:
+	if 'diflagON' in filename:
 		code = 1
+	elif 'diflagOFF' in filename:
+		code = 2
 	return code
 
-
-xml_1 = glob2.glob('../../xmls/di_flag_on/*.xml')
-xml_2 = glob2.glob('../../xmls/di_flag_off/*.xml')
-AllXml = xml_1 + xml_final_2
+AllXml = glob2.glob('../../xmls/diFlag/*.xml')
 
 tempL1 = Labels.GenerateLabel()
 fm1 = Matrix.FinalMatrix()
 tc1 = TestCases.Algorithms()
-di_flag = [2,1]
+di_flag = [1,2]
 CputimeAll = {}
 
 for filen in AllXml:

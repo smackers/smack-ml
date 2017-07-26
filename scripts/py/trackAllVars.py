@@ -6,16 +6,19 @@ import TestCases
 
 # --- Setting the diFlag value
 def FlagVal(filename):
-	if 'trackAllVars-ON' in filename:
+	if 'diflagOFF-allVarsON' in filename:
 		code = 1
-	elif 'diflag-AllVars-OFF' in filename:
+	elif 'diflagON-allVarsON' in filename:
 		code = 2
+	elif 'diflag-AllVars-OFF' in filename:
+		code = 3
+	else:
+		code = 4
 	return code
 
 
-xml_1 = glob2.glob('../../xmls/di_flag_on/*.xml')
-xml_2 = glob2.glob('../../xmls/di_flag_off/*.xml')
-
+xml_1 = glob2.glob('../../xmls/diFlag/*.xml')
+xml_2 = glob2.glob('../../xmls/allVars/*.xml')
 AllXml = xml_1 + xml_2
 
 tempL1 = Labels.GenerateLabel()
