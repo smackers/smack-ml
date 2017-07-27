@@ -1,9 +1,5 @@
-import Matrix
-import glob2
-import Labels
-import glob2
-import TestCases
-import pickle
+import Matrix, Features, Labels, TestCases
+import glob2, pickle
 
 # ---- assign appropriate unroll value
 def UnrollVal(filename):
@@ -26,9 +22,9 @@ def UnrollVal(filename):
 	return unroll_code
 
 # ----
-tempL0 = Labels.GenerateLabel()
-fm0 = Matrix.FinalMatrix()
-tc0 = TestCases.Algorithms()
+tempL = Labels.GenerateLabel()
+fmatrix = Matrix.FinalMatrix()
+testc = TestCases.Algorithms()
 unroll = [1,2,4,6,8,16,32,64]
 
 xml_files = glob2.glob('../../xmls/unroll/*.xml')
@@ -37,10 +33,10 @@ CputimeAll = {}
 # ---- creating temp collection of all cputime where category = 'correct'
 for filen in xml_files:
 	code = UnrollVal(filen)
-	CputimeAll = tempL0.xmlTree(code,filen,CputimeAll)
+	CputimeAll = tempL.xmlTree(code,filen,CputimeAll)
 
 LabelsMinCputime = {}
-LabelsMinCputime = tempL0.ComputeFinalLabels(CputimeAll,LabelsMinCputime,unroll)
+LabelsMinCputime = tempL.ComputeFinalLabels(CputimeAll,LabelsMinCputime,unroll)
 
 #loading the feature dictionary
 Features = pickle.load(open('../txt/FinalFeatures.txt','r'))
@@ -49,6 +45,12 @@ Features = pickle.load(open('../txt/FinalFeatures.txt','r'))
 pass the feature dict and label dict to the matrix function'''
 
 
-ResultMatrix = fm0.FeatureAndLabelMatrix(Features,LabelsMinCputime)
+ResultMatrix = fmatrix.FeatureAndLabelMatrix(Features,LabelsMinCputime)
 #print len(ResultMatrix)
-tc0.TestingAlgorithmResults(ResultMatrix)
+k = input(print "Choose a number from the following options \n 1. To Test Algorithms \n 2. To predict label for a new file")
+
+if k == 1:
+	testc.TestingAlgorithmResults(ResultMatrix)
+elif k == 2:
+	NewTestfilename = raw_input(print "Enter the path of the filename you want to predict: ")
+	tco.

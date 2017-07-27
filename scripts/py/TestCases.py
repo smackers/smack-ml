@@ -98,7 +98,7 @@ class Algorithms(object):
 		a1, a2,a3 = self.ResultAnalysis(test_labels, T, S, Z)
 		return a1,a2,a3
 
-
+	def 
 	#-----------------------------------------------------------------------------------------------
 	def TestingAlgorithmResults(self,matrix_f):
 
