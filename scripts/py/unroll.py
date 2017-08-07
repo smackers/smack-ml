@@ -25,6 +25,7 @@ def UnrollVal(filename):
 tempL = Labels.GenerateLabel()
 fmatrix = Matrix.FinalMatrix()
 testc = TestCases.Algorithms()
+Newfeature = Features.FeatureGeneration()
 unroll = [1,2,4,6,8,16,32,64]
 
 xml_files = glob2.glob('../../xmls/unroll/*.xml')
@@ -53,4 +54,8 @@ if k == 1:
 	testc.TestingAlgorithmResults(ResultMatrix)
 elif k == 2:
 	NewTestfilename = raw_input(print "Enter the path of the filename you want to predict: ")
+	Newfeature.RunTool1(NewTestfilename)
+	Newfeature.RunTool2(NewTestfilename)
+	feature_vector_tool1 = Newfeature.formatting`
+
 	tco.

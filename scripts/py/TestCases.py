@@ -12,20 +12,38 @@ class Algorithms(object):
 		matrix_fes = random.sample(matrix_fes,N)
 		return matrix_fes
 
+	def AlgorithmTesting(self,matrix_f,k):
+		train_features, train_labels, test_features, test_labels = self.TrainAndTestData(matrix_f,k)
+		if len(test_features) == len(test_labels) == 0:
+			test_features = train_features
+			test_labels = train_labels
+		T, S, Z = self.ClassificationAlgorithms(train_features,train_labels,test_features)
+		a1, a2,a3 = self.ResultAnalysis(test_labels, T, S, Z)
+		return a1,a2,a3
+
+	def TrainingData(self,training_matrix):
+		tr_features = []; tr_labels = []
+		for i in range(len(training_matrix)):
+			tr_features.append(training_matrix[i][:-1])
+			tr_labels.append(training_matrix[i][-1])
+
+		return tr_features, tr_labels
+
+	def TestingData(self,test_matrix):
+		te_features = []; te_labels = []
+		for i in range(len(test_matrix)):
+			te_features.append(test_matrix[i][:-1])
+			te_labels.append(test_matrix[i][-1])
+
+		return te_features, te_labels
+
 	def TrainAndTestData(self,matrix_fs,k):
 		matrix_fs = self.RandomSampling(matrix_fs)
 		#---- picking training & test data
 		tr_data = matrix_fs[:k]; te_data = matrix_fs[k:]
-		tr_features = []; tr_labels = []
-		te_features = []; te_labels = []
 
-		for i in range(len(tr_data)):
-			tr_features.append(tr_data[i][:-1])
-			tr_labels.append(tr_data[i][-1])
-
-		for i in range(len(te_data)):
-			te_features.append(te_data[i][:-1])
-			te_labels.append(te_data[i][-1])
+		tr_features, tr_labels = self.TrainingData(tr_data)
+		te_features, te_labels = self.TestingData(te_data)
 
 		return tr_features, tr_labels, te_features, te_labels
 
@@ -89,16 +107,7 @@ class Algorithms(object):
 		print "Accuracy for linear SVM = {0}%%".format(a2)
 		print "Accuracy for Random forest classifier = {0}%%".format(a3)
 
-	def Just(self,matrix_f,k):
-		train_features, train_labels, test_features, test_labels = self.TrainAndTestData(matrix_f,k)
-		if len(test_features) == len(test_labels) == 0:
-			test_features = train_features
-			test_labels = train_labels
-		T, S, Z = self.ClassificationAlgorithms(train_features,train_labels,test_features)
-		a1, a2,a3 = self.ResultAnalysis(test_labels, T, S, Z)
-		return a1,a2,a3
-
-	def 
+	def
 	#-----------------------------------------------------------------------------------------------
 	def TestingAlgorithmResults(self,matrix_f):
 
@@ -112,7 +121,7 @@ class Algorithms(object):
 
 		if t == 1:
 			k = int(raw_input("Enter the number of training samples (<= 7664): "))
-			a1,a2,a3 = self.Just(matrix_f,k)
+			a1,a2,a3 = self.AlgorithmTesting(matrix_f,k)
 			self.PrintResults(a1,a2,a3)
 
 		elif t == 2:
@@ -122,7 +131,7 @@ class Algorithms(object):
 			accuracy_linear = []
 			accuracy_forest = []
 			for i in range(x):
-				a1,a2,a3 = self.Just(matrix_f,k)
+				a1,a2,a3 = self.AlgorithmTesting(matrix_f,k)
 				accuracy_non_linear.append(a1)
 				accuracy_linear.append(a2)
 				accuracy_forest.append(a3)
@@ -139,7 +148,7 @@ class Algorithms(object):
 			accuracy_linear = []
 			accuracy_forest = []
 			for j in range(len(p)):
-				a1,a2,a3 = self.Just(matrix_f,p[j])
+				a1,a2,a3 = self.AlgorithmTesting(matrix_f,p[j])
 				accuracy_non_linear.append(a1)
 				accuracy_linear.append(a2)
 				accuracy_forest.append(a3)
@@ -148,7 +157,7 @@ class Algorithms(object):
 
 		elif t == 4:
 			k = len(matrix_f)
-			a1,a2,a3 = self.Just(matrix_f,k)
+			a1,a2,a3 = self.AlgorithmTesting(matrix_f,k)
 			self.PrintResults(a1,a2,a3)
 
 		else:
