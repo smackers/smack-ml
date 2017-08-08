@@ -51,7 +51,7 @@ ResultMatrix = fmatrix.FeatureAndLabelMatrix(Features,LabelsMinCputime)
 k = input(print "Choose a number from the following options \n 1. To Test Algorithms \n 2. To predict label for a new file")
 
 if k == 1:
-	testc.TestingAlgorithmResults(ResultMatrix)
+	testc.TestCasesForAlgorithm(ResultMatrix)
 elif k == 2:
 	NewTestfilename = raw_input(print "Enter the path of the filename you want to predict: ")
 	Newfeature.RunTool1(NewTestfilename)

@@ -7,13 +7,16 @@ class Algorithms(object):
 	def __init__(self):
 		pass
 	#-----------------------------------------------------------------------------------------------------
-	def RandomSampling(self,matrix_fes):
-		N = len(matrix_fes)
-		matrix_fes = random.sample(matrix_fes,N)
-		return matrix_fes
 
 	def AlgorithmTesting(self,matrix_f,k):
-		train_features, train_labels, test_features, test_labels = self.TrainAndTestData(matrix_f,k)
+		N = len(matrix_f)
+		matrix_f = random.sample(matrix_f,N)
+		#---- picking training & test data
+		tr_data = matrix_f[:k]; te_data = matrix_f[k:]
+
+		train_features, train_labels = self.TrainingData(tr_data)
+		test_features, test_labels = self.AlgorithmTestingData(te_data)
+
 		if len(test_features) == len(test_labels) == 0:
 			test_features = train_features
 			test_labels = train_labels
@@ -29,23 +32,13 @@ class Algorithms(object):
 
 		return tr_features, tr_labels
 
-	def TestingData(self,test_matrix):
+	def AlgorithmTestingData(self,test_matrix):
 		te_features = []; te_labels = []
 		for i in range(len(test_matrix)):
 			te_features.append(test_matrix[i][:-1])
 			te_labels.append(test_matrix[i][-1])
 
 		return te_features, te_labels
-
-	def TrainAndTestData(self,matrix_fs,k):
-		matrix_fs = self.RandomSampling(matrix_fs)
-		#---- picking training & test data
-		tr_data = matrix_fs[:k]; te_data = matrix_fs[k:]
-
-		tr_features, tr_labels = self.TrainingData(tr_data)
-		te_features, te_labels = self.TestingData(te_data)
-
-		return tr_features, tr_labels, te_features, te_labels
 
 	def ClassificationAlgorithms(self,tr_features,tr_labels,te_features):
 		# ----- Gaussian kernel SVM
@@ -109,7 +102,7 @@ class Algorithms(object):
 
 	def
 	#-----------------------------------------------------------------------------------------------
-	def TestingAlgorithmResults(self,matrix_f):
+	def TestCasesForAlgorithm(self,matrix_f):
 
 		print """-----------------Following are the test case options:------------
 		1. Run only 1 iteration

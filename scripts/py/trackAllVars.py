@@ -49,4 +49,4 @@ pass the feature dict and label dict to the matrix function'''
 
 ResultMatrix = fm1.FeatureAndLabelMatrix(Features,LabelMinCputime)
 print len(ResultMatrix)
-tc1.TestingAlgorithmResults(ResultMatrix)
+tc1.TestCasesForAlgorithm(ResultMatrix)
