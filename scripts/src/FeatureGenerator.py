@@ -15,11 +15,14 @@ i_files = glob2.glob('../../../data/c/**/*.i')
 filenames = c_files + i_files
 #print type(c_files_merged)
 
-# ---- (uncomment this section for) generating all features from scratch
+training_output_roles = '../txt/'+'features_tool1'+'.txt' #file for all featues of tool1
+training_output_metrics = '../txt/'+'output_metrics1'+'.txt'
+training_output_file = '../txt/'+'features_tool2'+'.txt' #file for all features of tool2
+
 for filename in filenames:
 	filename = '../../..'+filename
-	fg.RunTool1(filename)
-	fg.RunTool2(filename)
+	fg.RunTool1(filename,training_output_roles,training_output_metrics)
+	fg.RunTool2(filename,training_output_file)
 
 # ---- formatting and merging of features generated above
 with open('../txt/features_tool1.txt','r') as f:
@@ -35,7 +38,6 @@ with open('../txt/features_tool2.txt','r') as g:
 content_tool2 = [x.strip() for x in content2]
 feature_dict_tool2 = fg.Formatting(content_tool2,len(content_tool2))
 #print feature_dict_tool2
-
 
 merged_dict = fg.MergeFeatures(feature_dict_tool1, feature_dict_tool2)
 #print merged_dict

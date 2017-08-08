@@ -11,13 +11,10 @@ class FeatureGeneration(object):
 		pass
 
 	#Purpose: Use tool1 (Yulia) and too2 (Thomas) to generate feature vectors of length 20 and 13 respectively
-	def RunTool1(self,input_file):
-		output_roles = '../txt/features_tool1.txt'
-		output_metrics = '../txt/output_metrics1.txt'
+	def RunTool1(self,input_file,output_roles,output_metrics):
 		subprocess.call(['bash','../sh/tool1.sh',input_file,output_roles,output_metrics])
 
-	def RunTool2(self,input_file):
-		output_file = '../txt/features_tool2.txt'
+	def RunTool2(self,input_file,output_file):
 		subprocess.call(['bash','../sh/tool2.sh',input_file,output_file])
 
 	def Filesize(self,input_file):
