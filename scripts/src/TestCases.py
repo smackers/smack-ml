@@ -8,22 +8,6 @@ class Algorithms(object):
 		pass
 	#-----------------------------------------------------------------------------------------------------
 
-	def AlgorithmTesting(self,matrix_f,k):
-		N = len(matrix_f)
-		matrix_f = random.sample(matrix_f,N)
-		#---- picking training & test data
-		tr_data = matrix_f[:k]; te_data = matrix_f[k:]
-
-		train_features, train_labels = self.TrainingData(tr_data)
-		test_features, test_labels = self.AlgorithmTestingData(te_data)
-
-		if len(test_features) == len(test_labels) == 0:
-			test_features = train_features
-			test_labels = train_labels
-		T, S, Z = self.ClassificationAlgorithms(train_features,train_labels,test_features)
-		a1, a2,a3 = self.ResultAnalysis(test_labels, T, S, Z)
-		return a1,a2,a3
-
 	def TrainingData(self,training_matrix):
 		tr_features = []; tr_labels = []
 		for i in range(len(training_matrix)):
@@ -64,12 +48,8 @@ class Algorithms(object):
 		return T, S, Z
 
 	def ResultAnalysis(self,te_labels, T, S, Z):
-
+		count1 = 0.0; count2 = 0.0; count3 = 0.0
 		#---- calculating accuracy
-		count1 = 0.0
-		count2 = 0.0
-		count3 = 0.0
-		#check for accuracy i.e. correct predictions
 		for i in range(len(te_labels)):
 			if te_labels[i] == T[i]:
 				count1 += 1
@@ -77,30 +57,42 @@ class Algorithms(object):
 				count2 += 1
 			if te_labels[i] == Z[i]:
 				count3 += 1
-
+		#check for accuracy i.e. correct predictions
 		accuracy1 = count1/len(te_labels)*100
 		accuracy2 = count2/len(te_labels)*100
 		accuracy3 = count3/len(te_labels)*100
 
 		return accuracy1, accuracy2, accuracy3
 
-	# ---- print average accuracy when # of pass = x
+	def AlgorithmTesting(self,matrix_f,k):
+		N = len(matrix_f)
+		matrix_f = random.sample(matrix_f,N)
+		#---- picking training & test data
+		tr_data = matrix_f[:k]; te_data = matrix_f[k:]
+
+		train_features, train_labels = self.TrainingData(tr_data)
+		test_features, test_labels = self.AlgorithmTestingData(te_data)
+
+		if len(test_features) == len(test_labels) == 0:
+			test_features = train_features
+			test_labels = train_labels
+		T, S, Z = self.ClassificationAlgorithms(train_features,train_labels,test_features)
+		a1, a2,a3 = self.ResultAnalysis(test_labels, T, S, Z)
+		return a1,a2,a3
+
+	# ---- compute average accuracy when # of pass > 1
 	def PrintAverage(self,accuracy_non_linear, accuracy_linear, accuracy_forest):
 		b1 = reduce(lambda x, y: x+y, accuracy_non_linear)/len(accuracy_non_linear)
 		b2 = reduce(lambda x, y: x+y, accuracy_linear)/len(accuracy_linear)
 		b3 = reduce(lambda x, y: x+y, accuracy_forest)/len(accuracy_forest)
 
-		print "Accuracy for Non-linear SVM = {0}%%".format(b1)
-		print "Accuracy for linear SVM = {0}%%".format(b2)
-		print "Accuracy for Random forest classifier = {0}%%".format(b3)
+		self.PrintResults(b1,b2,b3)
 
-	# ---- print accuracy when # of pass = 1
+	# ---- print accuracy
 	def PrintResults(self,a1,a2,a3):
 		print "Accuracy for Non-linear SVM = {0}%%".format(a1)
 		print "Accuracy for linear SVM = {0}%%".format(a2)
 		print "Accuracy for Random forest classifier = {0}%%".format(a3)
-
-	def
 	#-----------------------------------------------------------------------------------------------
 	def TestCasesForAlgorithm(self,matrix_f):
 
