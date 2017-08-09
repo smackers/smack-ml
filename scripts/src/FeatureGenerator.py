@@ -9,15 +9,10 @@ fs = FileSeparation.FileExtension()
 fg = Features.FeatureGeneration()
 
 # ---- separated files
-c_files = glob2.glob('../../../data/c/**/*.c')
-i_files = glob2.glob('../../../data/c/**/*.i')
-
+c_files = fg.ExtractFeatureFiles('../../../data/c/**','c')
+i_files = fg.ExtractFeatureFiles('../../../data/c/**','i')
 filenames = c_files + i_files
 #print type(c_files_merged)
-
-training_output_roles =  #file for all featues of tool1
-training_output_metrics =
-training_output_file =  #file for all features of tool2
 
 for filename in filenames:
 	filename = '../../..'+filename

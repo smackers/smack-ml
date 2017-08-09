@@ -1,10 +1,7 @@
-import subprocess
-import shlex
-import pickle
+import subprocess, shlex
 from sklearn import svm
-import pickle
+import pickle, random, glob2
 import numpy as np
-import random
 
 class FeatureGeneration(object):
 	def __init__(self):
@@ -19,6 +16,10 @@ class FeatureGeneration(object):
 
 	def Filesize(self,input_file):
 			subproces.call(input_file)
+
+	def ExtractFeatureFiles(pathname,extension):
+		filetype = glob2.glob(pathname + '/*.' + extension)
+		return filetype
 
 	#Purpose: Create a dictionary with a type-match key as labels
 	def Formatting(self,content, n):
