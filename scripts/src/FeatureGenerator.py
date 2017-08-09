@@ -15,14 +15,14 @@ i_files = glob2.glob('../../../data/c/**/*.i')
 filenames = c_files + i_files
 #print type(c_files_merged)
 
-training_output_roles = '../txt/'+'features_tool1'+'.txt' #file for all featues of tool1
-training_output_metrics = '../txt/'+'output_metrics1'+'.txt'
-training_output_file = '../txt/'+'features_tool2'+'.txt' #file for all features of tool2
+training_output_roles =  #file for all featues of tool1
+training_output_metrics =
+training_output_file =  #file for all features of tool2
 
 for filename in filenames:
 	filename = '../../..'+filename
-	fg.RunTool1(filename,training_output_roles,training_output_metrics)
-	fg.RunTool2(filename,training_output_file)
+	fg.RunTool1(filename,'../txt/features_tool1.txt','../txt/output_metrics1.txt')
+	fg.RunTool2(filename,'../txt/features_tool2.txt')
 
 # ---- formatting and merging of features generated above
 with open('../txt/features_tool1.txt','r') as f:

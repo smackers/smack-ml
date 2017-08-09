@@ -53,9 +53,10 @@ k = input(print "Choose a number from the following options \n 1. To Test Algori
 if k == 1:
 	testc.TestCasesForAlgorithm(ResultMatrix)
 elif k == 2:
+	
 	NewTestfilename = raw_input(print "Enter the path of the filename you want to predict: ")
 	Newfeature.RunTool1(NewTestfilename)
 	Newfeature.RunTool2(NewTestfilename)
-	feature_vector_tool1 = Newfeature.formatting`
+	feature_vector_tool1 = Newfeature.formatting
 
 	tco.
