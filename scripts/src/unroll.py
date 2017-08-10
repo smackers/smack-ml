@@ -52,6 +52,7 @@ ResultMatrix = fmatrix.FeatureAndLabelMatrix(Features,LabelsMinCputime)
 #print len(ResultMatrix)
 k = input(print "Choose a number from the following options \n 1. To Test Algorithms \n 2. To predict label for a new file")
 
+
 if k == 1:
 	testc.TestCasesForAlgorithm(ResultMatrix)
 elif k == 2:

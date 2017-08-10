@@ -6,7 +6,7 @@ import glob2
 
 fs = FileSeparation.FileExtension()
 fg = Features.FeatureGeneration()
-
+'''
 # ---- separate files
 c_files = fg.ExtractFiles('../../../data/c/**','c')
 i_files = fg.ExtractFiles('../../../data/c/**','i')
@@ -16,7 +16,7 @@ for filename in filenames:
 	filename = '../../..'+filename
 	fg.RunTool1(filename,'../txt/features_tool1.txt','../txt/output_metrics1.txt')
 	fg.RunTool2(filename,'../txt/features_tool2.txt')
-
+'''
 # ---- formatting features generated above
 with open('../txt/features_tool1.txt','r') as f:
 	content1 = f.readlines()

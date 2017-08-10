@@ -25,22 +25,8 @@ class FeatureGeneration(object):
 
 	#Purpose: Create a dictionary with a type-match key as labels
 	def Formatting(self,content, n, SplitParameter):
-		#temp_list = []
 		dic = {}
-
-		'''
-		# ---- list of list containing the filename & features vectors
-		if n == 14761:
-			for i in range(n):
-				listed = content[i].strip().split(' ')
-				temp_list.append(listed)
-		else:
-			for i in range(n):
-				listed = content[i].strip().split('\t')
-				listed[0] = '../..' + listed[0][13:] #formatting needed to match the FILENAME
-				temp_list.append(listed)
-		'''
-
+		
 		for i in range(n):
 			listed = content[i].strip().split(SplitParameter)
 			temp = map(float,listed[1:])
@@ -54,7 +40,8 @@ class FeatureGeneration(object):
 
 	#Purpose: to combine features from tool 2 with the ones of tool 1
 	def MergeFeatures(self,tool1, tool2):
-		for '../..'+filename[13:] in tool2: #formatting needed to match the FILENAME
-			if filename in tool1:
-				tool1[filename].extend(tool2[filename])
+		for filename in tool2:
+			filename1 = '../..' + filename[13:] #formatting needed to match the FILENAME
+			if filename1 in tool1:
+				tool1[filename1].extend(tool2[filename])
 		return tool1
