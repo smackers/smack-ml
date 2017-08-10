@@ -30,7 +30,7 @@ Newfeature = Features.FeatureGeneration()
 #-----
 unroll = [1,2,4,6,8,16,32,64]
 
-xml_files = fg.ExtractFeatureFiles('../../xmls/unroll','xml')
+xml_files = fg.ExtractFiles('../../xmls/unroll','xml')
 
 CputimeAll = {}
 # ---- creating temp collection of all cputime where category = 'correct'
@@ -56,8 +56,8 @@ if k == 1:
 	testc.TestCasesForAlgorithm(ResultMatrix)
 elif k == 2:
 	NewTestfilename = raw_input(print "Enter the path of the filenames you want to predict labels for (current_path = home directory): ")
-	new_c_files = fg.ExtractFeatureFiles(NewTestfilename,'c')
-	new_i_files = fg.ExtractFeatureFiles(NewTestfilename,'i')
+	new_c_files = fg.ExtractFiles(NewTestfilename,'c')
+	new_i_files = fg.ExtractFiles(NewTestfilename,'i')
 	new_files = new_c_files + new_i_files
 	Newfeature.RunTool1(NewTestfilename,'../txt/NewFeaturesTool1.txt','../txt/NewOutputMetrics.txt')
 	Newfeature.RunTool2(NewTestfilename,'../txt/NewFeaturesTool2.txt')
