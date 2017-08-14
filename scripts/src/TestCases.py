@@ -94,14 +94,14 @@ class Algorithms(object):
 		print "Accuracy for linear SVM = {0}%%".format(a2)
 		print "Accuracy for Random forest classifier = {0}%%".format(a3)
 	#-----------------------------------------------------------------------------------------------
-	def TestCasesForAlgorithm(self,matrix_f):
+	def TestCasesForAlgorithm(self,matrix_f,matrix_newData):
 
 		print """-----------------Following are the test case options:------------
 		1. Run only 1 iteration
 		2. Run 'x' # of runs on training data with size 'K'
 		3. Run experiment on GAP DEPENDENT values of 'k'
 		4. Overfitting
-		"""
+		5. Predict labels for new data"""
 		t = int(raw_input("Enter the test case you want to run: "))
 
 		if t == 1:
@@ -147,3 +147,7 @@ class Algorithms(object):
 
 		else:
 			print "Error: Accepted values (1,2,3,4). Check your selected value "
+
+		elif t == 5:
+			tr_data, tr_label = self.TrainingData(matrix_f)
+			
