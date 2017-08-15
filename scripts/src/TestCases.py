@@ -150,4 +150,4 @@ class Algorithms(object):
 
 		elif t == 5:
 			tr_data, tr_label = self.TrainingData(matrix_f)
-			
+			NLSVM, LSVM, RF = self.ClassificationAlgorithms(tr_data, tr_label, matrix_newData)

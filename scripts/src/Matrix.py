@@ -17,3 +17,9 @@ class FinalMatrix(object):
 		'''with open("../txt/f_matrix.txt","w") as f:
 			pickle.dump(matrix_f,f)'''
 		return matrix_f
+
+	def NewDataFeatureMatrix(self, feature_dict):
+		matrix_f = []
+		for f in feature_dict:
+			if len(feature_dict[f]) == 34:
+				matrix_f.append(feature_dict[f])

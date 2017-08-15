@@ -54,5 +54,5 @@ k = input(print "Choose a number from the following options \n 1. To Test Algori
 if k == 1:
 	testc.TestCasesForAlgorithm(ResultMatrix, None)
 elif k == 2:
-	
-	testc.TestCasesForAlgorithm(ResultMatrix,)
+	newFileFeatures = pickle.load(open('../txt/NewFinalFeatures.txt','r'))
+	testc.TestCasesForAlgorithm(ResultMatrix,newFileFeatures)

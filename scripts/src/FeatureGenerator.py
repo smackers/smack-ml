@@ -15,7 +15,7 @@ if n == 1:
 		pickle.dump(merged_dict,f)
 elif n == 2:
 	NewTestfilename = raw_input(print "Enter the path of the filenames you want to predict labels for (current_path = home directory): ")
-	merged_dict = fg.PassingToolParameters(NewTestfilename,'../txt/NewFeaturesTool1.txt','../txt/NewOutputMetrics.txt','../txt/NewFeaturesTool2.txt')
+	merged_dict = fg.MainFunctionality(NewTestfilename,'../txt/NewFeaturesTool1.txt','../txt/NewOutputMetrics.txt','../txt/NewFeaturesTool2.txt')
 	# ---- writing the final features to a file (use pickle.load() to load this file directly)
 	with open('../txt/NewFinalFeatures.txt','w') as f:
 		pickle.dump(merged_dict,f)
