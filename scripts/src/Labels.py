@@ -43,7 +43,7 @@ class GenerateLabel(object):
 					value = str(column.getAttribute('value'))
 					print code, filename, value
 					if len(value) == 0:
-						value = 'Bug'
+						value = 'Bug'	#happened in trackAllVars.py
 					else:
 						value = round(float(value[:len(value)-1]),10)
 
