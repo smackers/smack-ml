@@ -41,7 +41,12 @@ class GenerateLabel(object):
 				if str(column.getAttribute('title')) == 'cputime':
 					# ---- convert the value from string to float and rounding the value
 					value = str(column.getAttribute('value'))
-					value = round(float(value[:len(value)-1]),10)
+					print code, filename, value
+					if len(value) == 0:
+						value = 'Bug'
+					else:
+						value = round(float(value[:len(value)-1]),10)
+
 
 				if str(column.getAttribute('title')) == 'category':
 					face_value = str(column.getAttribute('value'))
