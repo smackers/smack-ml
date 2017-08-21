@@ -12,7 +12,7 @@ def FlagVal(filename):
 		code = 2
 	elif 'diflag-AllVars-OFF' in filename:
 		code = 3
-	else:
+	elif 'diflagON-AllVarsOFF' in filename:
 		code = 4
 	return code
 
@@ -24,7 +24,7 @@ AllXml = xml_1 + xml_2
 tempL1 = Labels.GenerateLabel()
 fm1 = Matrix.FinalMatrix()
 tc1 = TestCases.Algorithms()
-di_flag = [1,2]
+trackAll = [1,2,3,4]
 CputimeAll = {}
 
 for filen in AllXml:
@@ -32,10 +32,10 @@ for filen in AllXml:
 	CputimeAll = tempL1.xmlTree(code,filen,CputimeAll)
 
 LabelMinCputime = {}
-LabelMinCputime = tempL1.ComputeFinalLabels(CputimeAll,LabelMinCputime,di_flag)
+LabelMinCputime = tempL1.ComputeFinalLabels(CputimeAll,LabelMinCputime,trackAll)
 
-temp_count = 0
-'''for i in LabelMinCputime:
+'''temp_count = 0
+for i in LabelMinCputime:
 	if LabelMinCputime[i] == 1:
 		temp_count += 1
 
@@ -46,7 +46,6 @@ Features = pickle.load(open('../txt/FinalFeatures.txt','r'))
 '''organize the label class and create the label dictionary.
 pass the feature dict and label dict to the matrix function'''
 
-
 ResultMatrix = fm1.FeatureAndLabelMatrix(Features,LabelMinCputime)
 print len(ResultMatrix)
-tc1.TestCasesForAlgorithm(ResultMatrix)
+tc1.TestCasesForAlgorithm(ResultMatrix, None)

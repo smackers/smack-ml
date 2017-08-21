@@ -145,9 +145,9 @@ class Algorithms(object):
 			a1,a2,a3 = self.AlgorithmTesting(matrix_f,k)
 			self.PrintResults(a1,a2,a3)
 
-		else:
-			print "Error: Accepted values (1,2,3,4). Check your selected value "
-
 		elif t == 5:
 			tr_data, tr_label = self.TrainingData(matrix_f)
 			NLSVM, LSVM, RF = self.ClassificationAlgorithms(tr_data, tr_label, matrix_newData)
+
+		else:
+			print "Error: Accepted values (1,2,3,4). Check your selected value "
