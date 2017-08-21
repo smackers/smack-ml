@@ -20,15 +20,15 @@ def data_structure(property_for,result,unroll_cputime):
 
 			if filename in unroll_cputime:
 				unroll_cputime[filename].append(property_for)
-			else:			
+			else:
 				unroll_cputime[filename] = []
 				unroll_cputime[filename].append(property_for)
 
 		# ---- find <tag> = 'column' as the child of <tag> = 'run'
 		columns = run.getElementsByTagName('column')
-		
+
 		for column in columns:
-			
+
 			if str(column.getAttribute('title')) == 'status':
 				unroll_cputime[filename].append(str(column.getAttribute('value')))
 
@@ -37,21 +37,21 @@ def data_structure(property_for,result,unroll_cputime):
 				# ---- convert the value from string to float and rounding the value
 				value = str(column.getAttribute('value'))
 				value = round(float(value[:len(value)-1]),10)
-			
+
 			if str(column.getAttribute('title')) == 'category':
 				face_value = str(column.getAttribute('value'))
-				
+
 				if face_value == 'correct':
 					unroll_cputime[filename].append(value)
 				else:
 					unroll_cputime[filename].append(500000)	#face_value = ('wrong' || 'TIMEOUT')
 				unroll_cputime[filename].append(face_value)
 
-	return unroll_cputime	
+	return unroll_cputime
 
 # ---- assign appropriate unroll value
 def unroll_code(filename):
-	
+
 	if 'unroll1' in filename:
 		unroll_code = 1
 	elif 'unroll2' in filename:
@@ -81,7 +81,7 @@ unroll_cputime = {}
 
 # ---- creating tree root for .xml files
 for i in range(len(content)):
-	
+
 	DOMTree_1 = xml.dom.minidom.parse(content[i])
 	result_1 = DOMTree_1.documentElement
 	property_for = unroll_code(content[i])
