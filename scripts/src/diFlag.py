@@ -32,14 +32,20 @@ for i in LabelMinCputime:
 	if LabelMinCputime[i] == 1:
 		temp_count += 1
 
-print temp_count, len(LabelMinCputime)'''
+print temp_count, len(LabelMinCputime)
+
+print LabelMinCputime
+print LabelMinCputime['../../c/array-examples/data_structures_set_multi_proc_false-unreach-call_ground.c']
+print LabelMinCputime['../../c/array-examples/data_structures_set_multi_proc_false-unreach-call_ground..i']
+
+with open('../txt/diFinalLabels.txt','w') as f:
+	pickle.dump(LabelMinCputime,f)'''
 
 #loading the feature dictionary
 Features = pickle.load(open('../txt/FinalFeatures.txt','r'))
 
 '''organize the label class and create the label dictionary.
 pass the feature dict and label dict to the matrix function'''
-
 
 ResultMatrix = fm1.FeatureAndLabelMatrix(Features,LabelMinCputime)
 print len(ResultMatrix)

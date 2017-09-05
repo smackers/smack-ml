@@ -41,7 +41,7 @@ class GenerateLabel(object):
 				if str(column.getAttribute('title')) == 'cputime':
 					# ---- convert the value from string to float and rounding the value
 					value = str(column.getAttribute('value'))
-					print code, filename, value
+					#print code, filename, value
 					if len(value) == 0:
 						value = 'Bug'	#happened in trackAllVars.py
 					else:
