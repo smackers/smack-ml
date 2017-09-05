@@ -27,12 +27,13 @@ for filen in AllXml:
 LabelMinCputime = {}
 LabelMinCputime = tempL1.ComputeFinalLabels(CputimeAll,LabelMinCputime,di_flag)
 
-temp_count = 0
-'''for i in LabelMinCputime:
+'''temp_count = 0
+for i in LabelMinCputime:
 	if LabelMinCputime[i] == 1:
 		temp_count += 1
 
 print temp_count, len(LabelMinCputime)'''
+
 #loading the feature dictionary
 Features = pickle.load(open('../txt/FinalFeatures.txt','r'))
 
