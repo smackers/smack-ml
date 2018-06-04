@@ -10,9 +10,9 @@ class Algorithms(object):
 
 	def partitionData(self,tr_mat,te_mat):
 		tr_f = tr_mat[:,0:-1]
-		tr_l = np.ravel(tr_mat[:,-1])
+		tr_l = np.array(tr_mat[:,-1])
 		te_f = te_mat[:,0:-1]
-		te_l = np.ravel(te_mat[:,-1])
+		te_l = np.array(te_mat[:,-1])
 		return tr_f, tr_l, te_f, te_l
 
 
