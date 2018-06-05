@@ -17,12 +17,17 @@ class Algorithms(object):
 
 
 	def ClassificationAlgorithms(self,tr_f,tr_l,te_f):
-		# ----- Gaussian kernel SVM
+		#non-linear SVM
+		non_clf = svm.SVC(kernel='rbf')
+		non_clf.fit(tr_f,tr_l)
+		P = non_clf.predict(te_f)
+
+		# ----- Multiclass Linear SVM (one vs one)
 		clf = svm.SVC(decision_function_shape = 'ovo')
 		clf.fit(tr_f,tr_l)
 		T = clf.predict(te_f)
 
-		#---- linear SVM
+		#---- linear SVM (one vs all)
 		lin_clf = svm.LinearSVC()
 		lin_clf.fit(tr_f,tr_l)
 		S = lin_clf.predict(te_f)
@@ -33,28 +38,32 @@ class Algorithms(object):
 		Z = forest_clf.predict(te_f)
 
 		#----convert T to a list
+		P = P.tolist()
 		T = T.tolist()
 		S = S.tolist()
 		Z = Z.tolist()
 
-		return T, S, Z
+		return P, T, S, Z
 
-	def ResultAnalysis(self,te_l, T, S, Z):
-		count1 = 0.0; count2 = 0.0; count3 = 0.0
+	def ResultAnalysis(self,te_l, P, T, S, Z):
+		count1 = 0.0; count2 = 0.0; count3 = 0.0; count4 = 0.0;
 		#---- calculating accuracy
 		for i in range(len(te_l)):
-			if te_l[i] == T[i]:
+			if te_l[i] == P[i]:
 				count1 += 1
-			if te_l[i] == S[i]:
+			if te_l[i] == T[i]:
 				count2 += 1
-			if te_l[i] == Z[i]:
+			if te_l[i] == S[i]:
 				count3 += 1
+			if te_l[i] == Z[i]:
+				count4 += 1
 		#check for accuracy i.e. correct predictions
 		accuracy1 = count1/len(te_l)*100
 		accuracy2 = count2/len(te_l)*100
 		accuracy3 = count3/len(te_l)*100
+		accuracy4 = count4/len(te_l)*100
 
-		return accuracy1, accuracy2, accuracy3
+		return accuracy1, accuracy2, accuracy3, ACCURACY4
 
 	def AlgorithmTesting(self,matrix_f,k):
 		N = len(matrix_f)
@@ -67,23 +76,24 @@ class Algorithms(object):
 			test_features = train_features
 			test_labels = train_labels
 		
-		T, S, Z = self.ClassificationAlgorithms(train_features,train_labels,test_features)
-		a1, a2,a3 = self.ResultAnalysis(test_labels, T, S, Z)
-		return a1,a2,a3
+		P, T, S, Z = self.ClassificationAlgorithms(train_features,train_labels,test_features)
+		a1, a2,a3, A4 = self.ResultAnalysis(test_labels, P, T, S, Z)
+		return a1,a2,a3, A4
 
 	# ---- compute average accuracy when # of pass > 1
-	def PrintAverage(self,accuracy_non_linear, accuracy_linear, accuracy_forest):
+	def PrintAverage(self,accuracy_non_linear, accuracy_multi, accuracy_linear, accuracy_forest):
 		b1 = reduce(lambda x, y: x+y, accuracy_non_linear)/len(accuracy_non_linear)
-		b2 = reduce(lambda x, y: x+y, accuracy_linear)/len(accuracy_linear)
-		b3 = reduce(lambda x, y: x+y, accuracy_forest)/len(accuracy_forest)
-
-		self.PrintResults(b1,b2,b3)
+		b2 = reduce(lambda x, y: x+y, accuracy_multi)/len(accuracy_multi)
+		b3 = reduce(lambda x, y: x+y, accuracy_linear)/len(accuracy_linear)
+		b4 = reduce(lambda x, y: x+y, accuracy_forest)/len(accuracy_forest)
+		self.PrintResults(b1,b2,b3,b4)
 
 	# ---- print accuracy
-	def PrintResults(self,a1,a2,a3):
+	def PrintResults(self,a1,a2,a3,a4):
 		print "Accuracy for Non-linear SVM = {0}%%".format(a1)
-		print "Accuracy for linear SVM = {0}%%".format(a2)
-		print "Accuracy for Random forest classifier = {0}%%".format(a3)
+		print "Accuracy for Multiclass linear SVM = {0}%%".format(a2)
+		print "Accuracy for linear SVM = {0}%%".format(a3)
+		print "Accuracy for Random forest classifier = {0}%%".format(a4)
 	#-----------------------------------------------------------------------------------------------
 	def TestCasesForAlgorithm(self,matrix_f,matrix_newData):
 
@@ -96,23 +106,25 @@ class Algorithms(object):
 		t = int(raw_input("Enter the test case you want to run: "))
 
 		if t == 1:
-			k = int(raw_input("Enter the number of training samples (<= 7664): "))
-			a1,a2,a3 = self.AlgorithmTesting(matrix_f,k)
-			self.PrintResults(a1,a2,a3)
+			k = int(raw_input("Enter the number of training samples ({0}): ".format(len(matrix_f))))
+			a1,a2,a3,a4 = self.AlgorithmTesting(matrix_f,k)
+			self.PrintResults(a1,a2,a3,a4)
 
 		elif t == 2:
-			k = int(raw_input("Enter the number of training samples {0}: ".format(len(matrix_f))))
+			k = int(raw_input("Enter the number of training samples ({0}): ".format(len(matrix_f))))
 			x = int(raw_input("Enter the number of iterations: "))
 			accuracy_non_linear = []
+			accuracy_multi = []
 			accuracy_linear = []
 			accuracy_forest = []
 			for i in range(x):
-				a1,a2,a3 = self.AlgorithmTesting(matrix_f,k)
+				a1,a2,a3,a4 = self.AlgorithmTesting(matrix_f,k)
 				accuracy_non_linear.append(a1)
-				accuracy_linear.append(a2)
-				accuracy_forest.append(a3)
+				accuracy_multi,append(a2)
+				accuracy_linear.append(a3)
+				accuracy_forest.append(a4)
 
-			self.PrintAverage(accuracy_non_linear,accuracy_linear,accuracy_forest)
+			self.PrintAverage(accuracy_non_linear, accuracy_multi, accuracy_linear,accuracy_forest)
 
 		elif t == 3:
 			z = int(raw_input("Enter the gap of training set size: "))

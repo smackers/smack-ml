@@ -1,5 +1,6 @@
 import glob2, pickle
 import numpy as np
+from sklearn.cluster import KMeans
 from TestCases import Algorithms
 
 from setFiles import classify
@@ -33,5 +34,15 @@ norm_mat, mean, std = a3.meanNorm()
 with open('normalizedF.txt','w') as f:
 	pickle.dump(norm_mat,f)
 
+cluster_mat = norm_mat[:,0:n-1]
+kmeans = KMeans(n_clusters=11, random_state=0).fit(cluster_mat)
+print kmeans.labels_, '\n' , norm_mat[:,-1]
+#print map(int,np.ravel(norm_mat[:,-1]).tolist())
+cl = kmeans.labels_
+gl = map(int,np.ravel(norm_mat[:,-1]).tolist())
+
+
+'''
 a2 = Algorithms()
 a2.TestCasesForAlgorithm(norm_mat,0)
+'''
