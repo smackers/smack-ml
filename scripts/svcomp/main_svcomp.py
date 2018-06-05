@@ -4,6 +4,7 @@ from TestCases import Algorithms
 
 from setFiles import classify
 from normalization import normalize
+import pickle
 
 pathname = '/proj/SMACK/smack-ml/scripts/txt/'
 a1 = classify()
@@ -22,19 +23,15 @@ for item in features:
 		if len(features[item]) == 33:
 			final[tmp] = features[item] + [labels[tmp]]
 			mat.append(final[tmp])
-#print final, print matrix
 
-print len(mat)
-#np_array = np.empty([len(matrix),len(matrix[0])])
-#np_matrix = np.matrix([xi for xi in matrix])
-#print np_array
 np_mat = np.matrix(mat)
 (m,n) = np.shape(np_mat)
-#print np_matrix
 
 a3 = normalize(np_mat, m , n)
 norm_mat, mean, std = a3.meanNorm()
-#print norm_mat
+
+with open('normalizedF.txt','w') as f:
+	pickle.dump(norm_mat,f)
 
 a2 = Algorithms()
 a2.TestCasesForAlgorithm(norm_mat,0)

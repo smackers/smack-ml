@@ -61,7 +61,6 @@ class Algorithms(object):
 		np.random.shuffle(matrix_f)
 		#---- picking training & test data
 		tr_data = matrix_f[:k,:]; te_data = matrix_f[k:,:]
-		print tr_data
 		train_features, train_labels, test_features, test_labels = self.partitionData(tr_data, te_data)
 	
 		if len(test_features) == len(test_labels) == 0:	#overfitting case
@@ -102,7 +101,7 @@ class Algorithms(object):
 			self.PrintResults(a1,a2,a3)
 
 		elif t == 2:
-			k = int(raw_input("Enter the number of training samples (<= 7664): "))
+			k = int(raw_input("Enter the number of training samples ({0}): ".format(len(matrix_f))))
 			x = int(raw_input("Enter the number of iterations: "))
 			accuracy_non_linear = []
 			accuracy_linear = []
