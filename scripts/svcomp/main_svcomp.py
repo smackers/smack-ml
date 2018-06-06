@@ -1,11 +1,11 @@
 import glob2, pickle
 import numpy as np
 from sklearn.cluster import KMeans
-from TestCases import Algorithms
 
+from TestCases import Algorithms
 from setFiles import classify
 from normalization import normalize
-import pickle
+from analyzing import analysis
 
 pathname = '/proj/SMACK/smack-ml/scripts/txt/'
 a1 = classify()
@@ -21,7 +21,7 @@ final = {}; path = '/proj/SMACK/sv-benchmarks/'; mat = []
 for item in features:
 	tmp = path+item[6:]
 	if tmp in labels:
-		if len(features[item]) == 33:
+		if len(features[item])	 == 33:
 			final[tmp] = features[item] + [labels[tmp]]
 			mat.append(final[tmp])
 
@@ -36,11 +36,11 @@ with open('normalizedF.txt','w') as f:
 
 cluster_mat = norm_mat[:,0:n-1]
 kmeans = KMeans(n_clusters=11, random_state=0).fit(cluster_mat)
-print kmeans.labels_, '\n' , norm_mat[:,-1]
-#print map(int,np.ravel(norm_mat[:,-1]).tolist())
 cl = kmeans.labels_
-gl = map(int,np.ravel(norm_mat[:,-1]).tolist())
 
+#print kmeans
+a9 = analysis(kmeans, cluster_mat)
+a9.clustering(cl)
 
 '''
 a2 = Algorithms()
