@@ -48,12 +48,12 @@ class FeatureGeneration(object):
 
 	def MainFunctionality(self,pathname,file1,file2,file3):
 		# ---- separate files
-		c_files = self.ExtractFiles(pathname,'c')
-		i_files = self.ExtractFiles(pathname,'i')
+		c_files = glob2.glob(pathname + '/*.c')
+		i_files = glob2.glob(pathname + '/*.i')
 		print len(c_files), len(i_files)
 		filenames = c_files + i_files
 		for filename in filenames:
-			filename = '../../..'+filename
+			#filename = '../../..'+filename
 			self.RunTool1(filename,file1,file2)
 			self.RunTool2(filename,file3)
 
