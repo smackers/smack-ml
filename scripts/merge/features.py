@@ -1,4 +1,5 @@
-import sys, os, pickle
+#!/usr/bin/env python2.7
+import pickle
 import numpy as np
 
 
@@ -10,12 +11,21 @@ import numpy as np
 5. Store into a file <path_new = path + '/output/file_name'>
 '''
 class processing():
-    def __init__(self, fname):
+    def __init__(self, fname, path, k):
         self.fname = fname
-        path = '/proj/SMACK/smack-ml/scripts/merge/'
+        self.path = path
+        self.k = k
 
-    def make_lists(self):
-        with open(fname,'r') as f:
-			content1 = f.readlines()
+    #Goal 1, 2
+    def make_lists(self,splitParameter):
+        content = []
+        with open(self.fname,'r') as f:
+			content = f.readlines()
+        content = [x.strip().split(splitParameter) for x in content]
 
-		content_tool1 = [x.strip() for x in content1]
+        for i in range(len(content)):
+            content[i][0] = self.path + content[i][0][self.k:]
+            content[i][1:] = map(float,content[i][1:])
+
+        print len(content), len(content[0])
+        return content

@@ -16,19 +16,26 @@ labels = a1.readRE()
 
 f = open(pathname + 'FinalFeatures.txt','r')
 features = pickle.load(f)
+f.close()
 #print len(features), len(features[0]), features
 
 final = {}; path = '/proj/SMACK/sv-benchmarks/'; mat = []
 for item in features:
 	tmp = path+item[6:]
 	if tmp in labels:
-		if len(features[item])	 == 33:
-			final[tmp] = features[item] + [labels[tmp]]
+		if len(features[item]) == 33:
+			final[tmp] = [tmp] + features[item] + [labels[tmp]]
 			mat.append(final[tmp])
 
-np_mat = np.matrix(mat)
-(m,n) = np.shape(np_mat)
+with open('NormFeaturesCategoryLabels.txt','w') as f:
+	f.dump(mat)
+f.close()
 
+np_mat = np.matrix(mat)
+#print np_mat
+(m,n) = np.shape(np_mat)
+#print m,n
+'''
 a3 = normalize(np_mat, m , n)
 norm_mat, mean, std = a3.meanNorm()
 
@@ -39,17 +46,18 @@ cluster_mat = norm_mat[:,0:n-1]
 kmeans = KMeans(n_clusters=11, random_state=0).fit(cluster_mat)
 cl = kmeans.labels_
 print type(cl)
-
+'''
 '''
 #print kmeans
 a9 = analysis(kmeans, cluster_mat)
 a9.clustering(cl)
 '''
-
+'''
 
 norm_mat1 = np.matrix('1,0,2;0,1,2;3,2,1')
 a11 = ana(norm_mat1,cl)
 a11.mat_clus()
+'''
 '''
 a2 = Algorithms()
 a2.TestCasesForAlgorithm(norm_mat,0)
