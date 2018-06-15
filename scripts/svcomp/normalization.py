@@ -1,3 +1,4 @@
+#!usr/bin/env python2.7
 import numpy as np
 import math
 
@@ -7,10 +8,11 @@ class normalize():
 		self.rows = m
 		self.cols = n
 
-	def meanNorm(self):
+	def meanStd(self):
 		mean = []; std = []; count = 0
 
-		for i in range(self.cols-1):
+		'''1st column = <filename>'''
+		for i in range(1, self.cols):
 			mu = np.mean(self.fmat[:,i])
 			sdev = np.std(self.fmat[:,i])
 
@@ -18,7 +20,3 @@ class normalize():
 			if sdev != 0: self.fmat[:,i] = (self.fmat[:,i] - mu)/sdev;
 			else: self.fmat[:,i] = self.fmat[:,i] - mu;
 		return self.fmat, mean, std
-		
-			
-
-

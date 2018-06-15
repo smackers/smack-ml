@@ -12,6 +12,8 @@ pathname = '/proj/SMACK/smack-ml/scripts/txt/'
 a1 = classify()
 labels = a1.readRE()
 
+with open('categoryLabels.txt','w') as f:
+	pickle.dump(labels,f)
 #print labels, print len(labels)
 
 f = open(pathname + 'FinalFeatures.txt','r')
@@ -27,10 +29,11 @@ for item in features:
 			final[tmp] = [tmp] + features[item] + [labels[tmp]]
 			mat.append(final[tmp])
 
+'''
 with open('NormFeaturesCategoryLabels.txt','w') as f:
-	f.dump(mat)
+	picle.dump(mat,f)
 f.close()
-
+'''
 np_mat = np.matrix(mat)
 #print np_mat
 (m,n) = np.shape(np_mat)
