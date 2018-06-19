@@ -11,17 +11,19 @@ class need_for_clustering():
     def __init__(self, mat, end):
         self.mat = mat
         (m,n) = self.mat.shape
+        print self.mat[0:2,:]
+        print m,n
         self.end = end
 
     def select_features(self):
         tmp = [[] for j in range(self.end)];
+
         for i in range(m):
-            start = 0;
-            while self.mat[i,-1] != start:
-                start += 1
-            tmp[start].append(self.mat[i,:])
-        print tmp[0].shape
-        print tmp[1][0]
+            start = int(self.mat[i,-1])
+            #print np.squeeze(np.asarray(self.mat[i,:]))
+            tmp[start].append(np.asarray(self.mat[i,:]).ravel())
+        #print tmp[0]
+        #print tmp[1][1]
         #if len(tmp) == self.end: print "Yahoo"
         return tmp
 
