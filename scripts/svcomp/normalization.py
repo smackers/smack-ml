@@ -4,7 +4,7 @@ import math
 
 class normalize():
 	def __init__(self, fmat,m,n):
-		self.fmat = fmat
+		self.fmat = fmat.astype(float)
 		self.rows = m
 		self.cols = n
 
@@ -12,7 +12,7 @@ class normalize():
 		mean = []; std = []; count = 0
 
 		'''1st column = <filename>'''
-		for i in range(1, self.cols):
+		for i in range(1, self.cols-1):
 			mu = np.mean(self.fmat[:,i])
 			sdev = np.std(self.fmat[:,i])
 

@@ -33,24 +33,26 @@ if __name__ == '__main__':
         m = t.mean(0).tolist()
         clus_center.append(m[0])
 
-    #print np.asarray(clus_center)
-    #print type(clus_center[0][0])
-
     '''run clustering with computed seed'''
-    #'''
-    accuracy = []; iter = []; count = 0;
-    for i in range(300):
+    clus_center = np.asarray(clus_center)
+    (a,b) = clus_center.shape
+    clus_center = clus_center[:,0:b-1]
+
+    accuracy = []; iter = [];
+    for i in range(800):
+        count = 0;
         iter.append(i)
 
-        kmeans_output = KMeans(n_clusters=11,init=clus_center,n_init=1,max_iter=1).fit(cluster_mat)
+        kmeans = KMeans(n_clusters=11,init=clus_center,n_init=1,max_iter=1).fit(cluster_mat)
         cl = kmeans.labels_
         clus_center = kmeans.cluster_centers_
+        #print cl[0]
 
         if len(original_labels) == len(cl):
             for i in range(len(original_labels)):
                 if original_labels[i][0] == cl[i]:
                     count += 1
-        accuracy.append(count/len(original_labels))
+        accuracy.append((count*100)/len(original_labels))
 
-    #print accuracy
+    
     #'''

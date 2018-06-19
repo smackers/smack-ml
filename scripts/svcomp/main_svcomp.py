@@ -26,21 +26,21 @@ for item in features:
 	tmp = path+item[6:]
 	if tmp in labels:
 		if len(features[item]) == 33:
-			final[tmp] = [tmp] + features[item] + [labels[tmp]]
+			final[tmp] = features[item] + [labels[tmp]]
 			mat.append(final[tmp])
 
-'''
+
 with open('NormFeaturesCategoryLabels.txt','w') as f:
-	picle.dump(mat,f)
+	pickle.dump(mat,f)
 f.close()
-'''
+
 np_mat = np.matrix(mat)
 #print np_mat
 (m,n) = np.shape(np_mat)
 #print m,n
-'''
+
 a3 = normalize(np_mat, m , n)
-norm_mat, mean, std = a3.meanNorm()
+norm_mat, mean, std = a3.meanStd()
 
 with open('normalizedF.txt','w') as f:
 	pickle.dump(norm_mat,f)
@@ -48,8 +48,8 @@ with open('normalizedF.txt','w') as f:
 cluster_mat = norm_mat[:,0:n-1]
 kmeans = KMeans(n_clusters=11, random_state=0).fit(cluster_mat)
 cl = kmeans.labels_
-print type(cl)
-'''
+print type(kmeans.cluster_centers_)
+
 '''
 #print kmeans
 a9 = analysis(kmeans, cluster_mat)
