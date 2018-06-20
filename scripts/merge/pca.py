@@ -14,12 +14,18 @@ plt.show()
 '''
 pca = PCA(n_components = 22)
 tmp_mat = pca.fit_transform(norm_mat)
-#print sum(pca.explained_variance_ratio_)
+print sum(pca.explained_variance_ratio_)
 #pca_mat = pca.fit_transform(norm_mat)
 
+pca = PCA(n_components = 21)
+tmp_mat1 = pca.fit_transform(norm_mat)
+print sum(pca.explained_variance_ratio_)
+#pca_mat = pca.fit_transform(norm_mat)
+
+
 (m,n) = tmp_mat.shape
-for i in range(n):
+for i in range(n-1):
     new_mat = np.delete(tmp_mat,i,1)
-    print new_mat.shape
-    pca = PCA(n_components=21).fit(new_mat)
-    #print i , sum(pca.explained_variance_ratio_)
+    pca = PCA(n_components=20)
+    t = pca.fit(new_mat)
+    print i , sum(pca.explained_variance_ratio_)
