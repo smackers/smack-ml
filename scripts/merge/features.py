@@ -17,6 +17,7 @@ class fix_filename():
 
     def make_lists(self,splitParameter,values):
         new_content = []
+        c = 0
         with open(self.fname,'r') as f:
 			content = f.readlines()
         '''Goal1: make lists'''
@@ -28,6 +29,9 @@ class fix_filename():
             if len(content[i][1:]) == values:
                 tmp = self.path + content[i][0][self.k:]
                 new_content.append([tmp] + map(float,content[i][1:]))
+            #else:
+                #print i, len(content[i])
+                #print content[i]
 
         #print len(new_content), len(new_content[0])
         return new_content
@@ -60,22 +64,34 @@ if __name__ == '__main__':
 
     file1 = fix_filename('f_tool2a.txt',path,8)
     f1 = file1.make_lists(' ',20)
+    #print len(f1)
+    #print "--"
 
     file2 = fix_filename('f_tool2b.txt',path,16)
     f2 = file2.make_lists('\t',13)
+    #print len(f2)
 
     m = Merge()
     merged_df = m.merge_lists(f1,f2)
+    print len(merged_df)#, merged_all.shape
 
-    '''Goal4: Storing the feature vectors'''
+    '''
+    #Goal4: Storing the feature vectors
     with open('notNormalizedMergedFeatures.txt','w') as f:
         pickle.dump(merged_df,f)
-
+    '''
     dl = pickle.load(open('categoryLabels.txt','r'))
+    print len(dl)
     merged_all,fnames = m.merge_labels(merged_df,dl)
     merged_all = np.matrix(merged_all)
+    print merged_all.shape
+    '''
+    merged_all = np.asarray(merged_all)
+    np.savetxt("foo.csv",merged_all,delimiter=",")
     #print merged_all.shape
 
-    '''Goal4: Storing the final numpy.matrix()'''
+    #Goal4: Storing the final numpy.matrix()
     with open('notNormalizedMergedLabels.txt','w') as f:
         pickle.dump(merged_all,f)
+
+    '''
