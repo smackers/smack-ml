@@ -60,7 +60,8 @@ dataset2_y = dataset2.iloc[:,-1].values
 
 # Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(dataset2_X, dataset2_y, test_size = 0.2)
+X_train, X_test, y_train, y_test = train_test_split(dataset2_X, dataset2_y, 
+                                                    test_size = 0.2)
 
 # Feature Scaling
 from sklearn.preprocessing import StandardScaler
@@ -69,15 +70,19 @@ X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 
 from ml import Algorithms
-algo = Algorithms(X_train, y_train, X_test, y_test)
+algo = Algorithms()
 
-#Random Forest implementation
-# with PCA
-y_pred = algo.pca_compute()
+# PCA
+#X_train, X_test = algo.pca_compute(X_train, X_test)
 
-#plt.scatter(X_train[:,0],X_train[:,1])
-# without PCA
-#y_pred = algo.rand_forest()
+'''Note: If PCA code is un-commented, X_train, X_test will be 2-dimensional.
+The further code will be affected with respect to X_train, X_test'''
+#K-Means
+#algo.clustering(X_train)
+
+#Random Forest Algorithm
+
+y_pred = algo.rand_forest(X_train, y_train, X_test)
 
 #confusion matrix
 from sklearn.metrics import confusion_matrix
