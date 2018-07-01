@@ -5,6 +5,13 @@ Created on Tue Jun 26 10:53:45 2018
 
 @author: ankit
 """
+def f1_matrix(y_test, y_pred): #confusion matrix
+    from sklearn.metrics import confusion_matrix
+    cm = confusion_matrix(y_test, y_pred)
+
+    accuracy = sum(np.diag(cm))/1212
+    #print(accuracy)
+    return accuracy*100
 
 #importing libraries
 import numpy as np
@@ -72,21 +79,30 @@ X_test = sc.transform(X_test)
 from ml import Algorithms
 algo = Algorithms()
 
-# PCA
-#X_train, X_test = algo.pca_compute(X_train, X_test)
-
 '''Note: If PCA code is un-commented, X_train, X_test will be 2-dimensional.
 The further code will be affected with respect to X_train, X_test'''
+
+''' Linear Dimensionality reduction to see if Random Forest does a good job.
+The data is not linearly separable.'''
+'''
+# PCA - 90% accuracy
+#X_train, X_test = algo.pca_compute(X_train, X_test)
+
+#LDA - 95% accuracy
+#X_train, X_test = algo.lda_compute(X_train, X_test, y_train)
+'''
+
+#Kernel-PCA (non-linear Dimensionality Reduction)
+'''Logistic regression classifier and Random Forest (linear classifier should work well
+as well)'''
+X_train, X_test = algo.kpca_compute(X_train, X_test)
+
 #K-Means
 #algo.clustering(X_train)
 
 #Random Forest Algorithm
+y_pred = algo.logistic_reg(X_train, y_train, X_test)
+print(" Logistic Regression: {0}".format(f1_matrix(y_test,y_pred)))
 
 y_pred = algo.rand_forest(X_train, y_train, X_test)
-
-#confusion matrix
-from sklearn.metrics import confusion_matrix
-cm = confusion_matrix(y_test, y_pred)
-
-accuracy = sum(np.diag(cm))/1212
-print(accuracy)
+print(" Random Forest: {0}".format(f1_matrix(y_test,y_pred)))

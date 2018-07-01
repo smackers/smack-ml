@@ -22,14 +22,36 @@ class Algorithms():
         X_test = pca.transform(X_test)
         print(pca.explained_variance_ratio_)
         
-        #visualizing the training data
-        plt.scatter(X_train[:,0], X_train[:,1], marker='.', c='r')
-        plt.title('Visualize PCA results (Training data)')        
-        plt.xlabel('PCA1')
-        plt.ylabel('PCA2')
-        plt.show()
+        self.scatter_plot(X_train, 'PCA')
         return X_train, X_test
         
+    def lda_compute(self, X_train, X_test, y_train):
+        #applying LDA
+        from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+        lda = LDA(n_components = 2)
+        X_train = lda.fit_transform(X_train, y_train)
+        X_test = lda.transform(X_test)
+        
+        self.scatter_plot(X_train, 'LDA')
+        return X_train, X_test
+    
+    def kpca_compute(self, X_train, X_test):
+        # Applying Kernel PCA
+        from sklearn.decomposition import KernelPCA
+        kpca = KernelPCA(n_components=2, kernel='rbf')
+        X_train = kpca.fit_transform(X_train)
+        X_test = kpca.transform(X_test)
+        
+        #self.scatter_plot(X_train, 'K-PCA')
+        return X_train, X_test
+        
+    def scatter_plot(self, X_train, tmp):
+        #visualizing the training data
+        plt.scatter(X_train[:,0], X_train[:,1], marker='.', c='r')
+        plt.title('Visualize ' + tmp + ' results (Training data)')        
+        plt.xlabel(tmp + '1')
+        plt.ylabel(tmp + '2')
+        plt.show()
     
     def clustering(self, X):
         #Applying K-Means clustering
