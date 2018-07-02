@@ -5,13 +5,11 @@ Created on Tue Jun 26 10:53:45 2018
 
 @author: ankit
 """
-def f1_matrix(y_test, y_pred): #confusion matrix
-    from sklearn.metrics import confusion_matrix
-    cm = confusion_matrix(y_test, y_pred)
 
-    accuracy = sum(np.diag(cm))/1212
-    #print(accuracy)
-    return accuracy*100
+def accuracy(cm,m):    
+    acc = sum(np.diag(cm))/m
+    #print(acc)
+    return acc*100
 
 #importing libraries
 import numpy as np
@@ -84,8 +82,11 @@ from ml import Algorithms
 algo = Algorithms()
 
 #Random Forest Algorithm
-y_pred = algo.logistic_reg(X_train, y_train, X_test)
-print(" Logistic Regression: {0}".format(f1_matrix(y_test,y_pred)))
-
 y_pred = algo.rand_forest(X_train, y_train, X_test)
-print(" Random Forest: {0}".format(f1_matrix(y_test,y_pred)))
+
+(m,n) = X_test.shape
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+
+print(" Random Forest: {0}".format(accuracy(cm, m)))
+print(" Random Forest: {0}".format(f1_score(cm)))
