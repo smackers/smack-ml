@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 dataset2 = pd.read_csv('trainXY.csv', delimiter = ' ')
 
 #Add code for X_test after running Yulia's tool
+#path to installation of Yulia's tool
+
 #feature matrix
 X_train = dataset2.iloc[:,1:-1].values
 
