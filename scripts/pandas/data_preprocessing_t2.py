@@ -34,9 +34,11 @@ y = pd.read_csv('label.txt',sep=' ',header=None)
 
 #assigning column names to the dataframes
 #y = pd.DataFrame(dl.items(),columns=['filename', 'Labels'])
-df_2a.columns = ['filename','1A','2B','3C','4D','5E','6F','7G','8H','9I','10J','11K','12L','13M','14N',
+df_2a.columns = ['filename','1A','2B','3C','4D','5E','6F','7G','8H','9I','10J',
+                 '11K','12L','13M','14N',
                    '15O','16P','17Q','18R','19S','20T']
-df_2b.columns = ['filename','A1','B2','C3','D4','E5','F6','G7','H8','I9','J10','K11','12L','13M']
+df_2b.columns = ['filename','A1','B2','C3','D4','E5','F6','G7','H8','I9','J10',
+                 'K11','12L','13M']
 y.columns = ['filename','labels']
 
 #formatting the filename column
@@ -58,6 +60,8 @@ df_merged = pd.merge(df_2a,df_2b,on='filename',how='inner')
 
 #creating datasets for ml. Merge features with labels
 dataset2 = pd.merge(df_merged,y,on='filename',how='inner')
+dataset2.to_csv(open('trainXY.csv','w'), sep=' ', index = False)
+
 
 #feature matrix
 dataset2_X = dataset2.iloc[:,1:-1].values
@@ -78,27 +82,6 @@ X_test = sc.transform(X_test)
 
 from ml import Algorithms
 algo = Algorithms()
-
-'''Note: If PCA code is un-commented, X_train, X_test will be 2-dimensional.
-The further code will be affected with respect to X_train, X_test'''
-
-''' Linear Dimensionality reduction to see if Random Forest does a good job.
-The data is not linearly separable.'''
-'''
-# PCA - 90% accuracy
-#X_train, X_test = algo.pca_compute(X_train, X_test)
-
-#LDA - 95% accuracy
-#X_train, X_test = algo.lda_compute(X_train, X_test, y_train)
-'''
-
-#Kernel-PCA (non-linear Dimensionality Reduction)
-'''Logistic regression classifier and Random Forest (linear classifier should work well
-as well)'''
-X_train, X_test = algo.kpca_compute(X_train, X_test)
-
-#K-Means
-#algo.clustering(X_train)
 
 #Random Forest Algorithm
 y_pred = algo.logistic_reg(X_train, y_train, X_test)

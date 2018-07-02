@@ -42,7 +42,7 @@ class Algorithms():
         X_train = kpca.fit_transform(X_train)
         X_test = kpca.transform(X_test)
         
-        #self.scatter_plot(X_train, 'K-PCA')
+        self.scatter_plot(X_train, 'K-PCA')
         return X_train, X_test
         
     def scatter_plot(self, X_train, tmp):
