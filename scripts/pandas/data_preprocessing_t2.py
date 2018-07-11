@@ -67,12 +67,21 @@ dataset2_X = dataset2.iloc[:,1:-1].values
 #label vector
 dataset2_y = dataset2.iloc[:,-1].values
 
-#Backward elimination process
-import statsmodels.formula.api as sm
-dataset2_X = np.append(arr = np.ones((6060, 1)).astype(int), values = dataset2_X, axis = 1)
-X_opt = dataset2_X
-regressor_OLS = sm.OLS(endog = dataset2_y, exog = X_opt).fit()
-regressor_OLS.summary()
+from ml import Algorithms
+algo = Algorithms()
+
+#Automatic Backward Elimination
+'''
+(m,n) = dataset2_X.shape
+dataset2_X = np.append(arr = np.ones((m, 1)).astype(int), values = dataset2_X, axis = 1)
+SL = 0.05
+X_opt = dataset2_X[:,0:n]
+X_Modeled = algo.backwardElimination(X_opt, SL, dataset2_y, m, n)
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X_Modeled, dataset2_y, 
+                                                    test_size = 0.2)
+'''
 
 # Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
@@ -84,9 +93,6 @@ from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
-
-from ml import Algorithms
-algo = Algorithms()
 
 #Random Forest Algorithm
 y_pred = algo.rand_forest(X_train, y_train, X_test)
