@@ -37,7 +37,7 @@ df_2a.columns = ['filename','1A','2B','3C','4D','5E','6F','7G','8H','9I','10J',
                    '15O','16P','17Q','18R','19S','20T']
 df_2b.columns = ['filename','A1','B2','C3','D4','E5','F6','G7','H8','I9','J10',
                  'K11','12L','13M']
-y.columns = ['filename','labels']
+#y.columns = ['filename','labels']
 
 #formatting the filename column
 #df_2a has 2 kinds of patterns in filename column
@@ -100,5 +100,6 @@ y_pred = algo.rand_forest(X_train, y_train, X_test)
 (m,n) = X_test.shape
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
+print(cm)
 
 print(" Random Forest: {0}".format(accuracy(cm, m)))

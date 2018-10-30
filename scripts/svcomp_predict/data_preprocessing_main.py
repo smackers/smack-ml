@@ -14,7 +14,7 @@ def accuracy(cm,m):
 #importing libraries
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 path = '/proj/SMACK/sv-benchmarks/c/'
 
@@ -28,7 +28,7 @@ df_2b = pd.read_csv('f_tool2b.csv')
 from labelling import Classify
 classify = Classify(path)
 classify.readRE()
-y = pd.read_csv('label.csv',names=['filename','labels'])
+y = pd.read_csv('label.csv',sep=' ',names=['filename','labels'])
 
 #assigning column names to the dataframes
 #y = pd.DataFrame(dl.items(),columns=['filename', 'Labels'])
@@ -88,6 +88,7 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(dataset2_X, dataset2_y, 
                                                     test_size = 0.2)
 
+print(len(X_train), len(X_test))
 # Feature Scaling
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
@@ -100,5 +101,6 @@ y_pred = algo.rand_forest(X_train, y_train, X_test)
 (m,n) = X_test.shape
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
+print(cm)
 
 print(" Random Forest: {0}".format(accuracy(cm, m)))
