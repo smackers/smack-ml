@@ -189,7 +189,7 @@ if __name__ == '__main__':
     n = input("Enter '1' to restart (any other key to resume): ")
     #initializing network (# of neurons in each layer size(net) = #of layers)
     net = Network([33,25,11])
-    net.SGD(training_data,1000,20,0.00095,test_data)
+    net.SGD(training_data,1000,20,0.01,test_data)
 
     #plotting SVD and saving the figures
     U, S, V = np.linalg.svd(net.weights[0],full_matrices = True)
