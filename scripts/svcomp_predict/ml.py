@@ -41,7 +41,7 @@ class Algorithms():
         plt.show()
 
 
-    def clustering(self, X):
+    def clustering(self, X, name):
         #Applying K-Means clustering
         from sklearn.cluster import KMeans
         wcss = []
@@ -52,10 +52,35 @@ class Algorithms():
 
         #visualizing the WCSS curve
         plt.plot(range(1,12), wcss)
-        plt.title('The Elbow method (Training Data)')
+        plt.title('The Elbow method (' + name + ' Data)')
         plt.xlabel('# of clusters')
         plt.ylabel('WCSS')
         plt.show()
+
+        #applying k-means to dataset
+        kmeans = KMeans(n_clusters = 11, random_state = 0, init='k-means++', max_iter=300, n_init = 10)
+        y_kmeans = kmeans.fit_predict(X)
+
+        if name != 'Input':
+    	    #visualizing the clusters
+        	plt.scatter(X[y_kmeans == 0, 0], X[y_kmeans == 0, 1], s = 20, c = 'red', label = 'Arrays')
+        	plt.scatter(X[y_kmeans == 1, 0], X[y_kmeans == 1, 1], s = 20, c = 'blue', label = 'BitVectors')
+        	plt.scatter(X[y_kmeans == 2, 0], X[y_kmeans == 2, 1], s = 20, c = 'green', label = 'ControlFlow')
+        	plt.scatter(X[y_kmeans == 3, 0], X[y_kmeans == 3, 1], s = 20, c = 'cyan', label = 'ECA')
+        	plt.scatter(X[y_kmeans == 4, 0], X[y_kmeans == 4, 1], s = 20, c = 'magenta', label = 'Floats')
+        	plt.scatter(X[y_kmeans == 5, 0], X[y_kmeans == 5, 1], s = 20, c = 'pink', label = 'Heap')
+        	plt.scatter(X[y_kmeans == 6, 0], X[y_kmeans == 6, 1], s = 20, c = 'orange', label = 'Loops')
+        	plt.scatter(X[y_kmeans == 7, 0], X[y_kmeans == 7, 1], s = 20, c = 'purple', label = 'ProductLines')
+        	plt.scatter(X[y_kmeans == 8, 0], X[y_kmeans == 8, 1], s = 20, c = 'navy', label = 'Recursive')
+        	plt.scatter(X[y_kmeans == 9, 0], X[y_kmeans == 9, 1], s = 20, c = 'lime', label = 'Sequentialized')
+        	plt.scatter(X[y_kmeans == 10, 0], X[y_kmeans == 10, 1], s = 20, c = 'gray', label = 'DeviceDrivers')
+        	plt.scatter(kmeans.cluster_centers_[:,0], kmeans.cluster_centers_[:,1], s = 20, c = 'yellow', label = 'Centroids')
+        	#plt.title(name + ' Cluster')
+        	plt.xlabel(name+'1')
+        	plt.ylabel(name+ '2')
+        	plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.2),
+          ncol=3, fancybox=True, shadow=True)
+        	plt.show()
 
 
     def logistic_reg(self, X_train, y_train, X_test):
@@ -75,9 +100,9 @@ class Algorithms():
         classifier.fit(X_train, y_train)
 
         y_pred = classifier.predict(X_test)
-        if j == 2:
+        '''if j == 2:
             self.scatter_plot_dim_red(X_train, y_train, classifier, tmp + ' train set')
-            self.scatter_plot_dim_red(X_test, y_test, classifier, tmp + ' test set')
+            self.scatter_plot_dim_red(X_test, y_test, classifier, tmp + ' test set')'''
         return y_pred
 
     def scatter_plot_dim_red(self, X, Y, classifier, name):
