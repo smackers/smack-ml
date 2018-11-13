@@ -57,9 +57,11 @@ class Algorithms():
         plt.ylabel('WCSS')
         plt.show()
 
+
         #applying k-means to dataset
         kmeans = KMeans(n_clusters = 11, random_state = 0, init='k-means++', max_iter=300, n_init = 10)
         y_kmeans = kmeans.fit_predict(X)
+
 
         if name != 'Input':
     	    #visualizing the clusters
@@ -78,8 +80,8 @@ class Algorithms():
         	#plt.title(name + ' Cluster')
         	plt.xlabel(name+'1')
         	plt.ylabel(name+ '2')
-        	plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.2),
-          ncol=3, fancybox=True, shadow=True)
+        	plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.1),
+          ncol=4, fancybox=True, shadow=True)
         	plt.show()
 
 
@@ -100,9 +102,9 @@ class Algorithms():
         classifier.fit(X_train, y_train)
 
         y_pred = classifier.predict(X_test)
-        '''if j == 2:
+        if j == 2:
             self.scatter_plot_dim_red(X_train, y_train, classifier, tmp + ' train set')
-            self.scatter_plot_dim_red(X_test, y_test, classifier, tmp + ' test set')'''
+            self.scatter_plot_dim_red(X_test, y_test, classifier, tmp + ' test set')
         return y_pred
 
     def scatter_plot_dim_red(self, X, Y, classifier, name):
@@ -120,7 +122,8 @@ class Algorithms():
         plt.title(name)
         plt.xlabel('PC1')
         plt.ylabel('PC2')
-        plt.legend()
+        plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.1),
+          ncol=4, fancybox=True, shadow=True)
         plt.show()
 
         #Backward elimination with P-values and adjusted R-square
@@ -145,7 +148,7 @@ class Algorithms():
                         if (adjR_before >= adjR_after):
                             x_rollback = np.hstack((x, temp[:,[0,j]]))
                             x_rollback = np.delete(x_rollback, j, 1)
-                            #print (regressor_OLS.summary())
+                            print (regressor_OLS.summary())
                             return x_rollback
                         else:
                             continue

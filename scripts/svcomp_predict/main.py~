@@ -17,6 +17,11 @@ def plot_scatter(X_tr, X_te, name): #scatter plots for 2 dimensions (train and t
     algo.scatter_plot(X_tr, name, 'train')
     algo.scatter_plot(X_te, name, 'test')
 
+def random_for(X_train_m, y_train, X_test_m, y_test, name, i):
+	y_pred_m = algo.rand_forest(X_train_m, y_train, X_test_m, y_test, name, i)
+        print(" Random Forest for {0} with {1} components: {2}".format(name,i, f1_matrix(y_test,y_pred_m)))
+
+
 #importing libraries
 import numpy as np
 import pandas as pd
@@ -67,7 +72,7 @@ dataset2_y = dataset2.iloc[:,-1].values #labels vector
 
 #Automatic Backward Elimination
 (m,n) = dataset2_X.shape
-print(m,n)
+#print(m,n)
 dataset2_X = np.append(arr = np.ones((m, 1)).astype(int), values = dataset2_X, axis = 1)
 SL = 0.05
 X_opt = dataset2_X[:,0:n]
@@ -107,23 +112,21 @@ choice = int(input("Enter your choice: "))
 if choice == 1:
     # PCA - 90% accuracy
     name = 'PCA'
-    for i in range(1,34):
+    for i in range(1,3):
         X_train_m, X_test_m = algo.pca_compute(X_train, X_test, i)
         if i == 2: plot_scatter(X_train_m, X_test_m, 'PCA')
-        y_pred_m = algo.rand_forest(X_train_m, y_train, X_test_m, y_test, name, i)
-        print(" Random Forest for PCA with {0} components: {1}".format(i, f1_matrix(y_test,y_pred_m)))
-
+	random_for(X_train_m, y_train, X_test_m, y_test, name, i)       
+	
 elif choice == 2:
     #LDA - 95% accuracy
     name = 'LDA'
-    for i in range(1,34):
+    for i in range(1,3):
         X_train_m, X_test_m = algo.lda_compute(X_train, X_test, y_train, i)
         if i == 2: plot_scatter(X_train_m, X_test_m, 'LDA')
-        y_pred_m = algo.rand_forest(X_train_m, y_train, X_test_m, y_test, name, i)
-        print(" Random Forest for LDA with {0} components: {1}".format(i, f1_matrix(y_test,y_pred_m)))
+	random_for(X_train_m, y_train, X_test_m, y_test, name, i)
 
 else:
     print("Incorrect option selected")
 
-algo.clustering(X_train, 'input') #K-Means on actual data
+algo.clustering(X_train, 'Input') #K-Means on actual data
 algo.clustering(X_train_m, name) #K-Means on PCA/ LDA dataset

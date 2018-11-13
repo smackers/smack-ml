@@ -109,12 +109,9 @@ class Network(object):
 		    sigmoid_prime(zs[-1])
 		nabla_b[-1] = delta
 		nabla_w[-1] = np.dot(delta, activations[-2].transpose())
-		# Note that the variable l in the loop below is used a little
-		# differently to the notation in Chapter 2 of the book.  Here,
+		#Here,
 		# l = 1 means the last layer of neurons, l = 2 is the
-		# second-last layer, and so on.  It's a renumbering of the
-		# scheme in the book, used here to take advantage of the fact
-		# that Python can use negative indices in lists.
+		# second-last layer, and so on.
 		for l in xrange(2, self.num_layers):
 		    z = zs[-l]
 		    sp = sigmoid_prime(z)
@@ -128,7 +125,6 @@ class Network(object):
 		network outputs the correct result. Note that the neural
 		network's output is assumed to be the index of whichever
 		neuron in the final layer has the highest activation."""
-		#test_results = [(np.argmax(self.feedforward(x)), y) for (x, y) in test_data]
 		test_results = [(np.argmax(self.feedforward(x)), np.argmax(y)) for (x,y) in test_data]
 		return sum(int(x == y) for (x, y) in test_results)
 

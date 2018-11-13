@@ -17,6 +17,11 @@ def plot_scatter(X_tr, X_te, name): #scatter plots for 2 dimensions (train and t
     algo.scatter_plot(X_tr, name, 'train')
     algo.scatter_plot(X_te, name, 'test')
 
+def random_for(X_train_m, y_train, X_test_m, y_test, name, i):
+	y_pred_m = algo.rand_forest(X_train_m, y_train, X_test_m, y_test, name, i)
+        print(" Random Forest for {0} with {1} components: {2}".format(name, i, f1_matrix(y_test,y_pred_m)))
+
+
 #importing libraries
 import numpy as np
 import pandas as pd
@@ -107,20 +112,18 @@ choice = int(input("Enter your choice: "))
 if choice == 1:
     # PCA - 90% accuracy
     name = 'PCA'
-    for i in range(1,7):
+    for i in range(1,3):
         X_train_m, X_test_m = algo.pca_compute(X_train, X_test, i)
-        #if i == 2: plot_scatter(X_train_m, X_test_m, 'PCA')
-        y_pred_m = algo.rand_forest(X_train_m, y_train, X_test_m, y_test, name, i)
-        print(" Random Forest for PCA with {0} components: {1}".format(i, f1_matrix(y_test,y_pred_m)))
-
+        if i == 2: plot_scatter(X_train_m, X_test_m, 'PCA')
+	random_for(X_train_m, y_train, X_test_m, y_test, name, i)       
+	
 elif choice == 2:
     #LDA - 95% accuracy
     name = 'LDA'
-    for i in range(1,7):
+    for i in range(1,3):
         X_train_m, X_test_m = algo.lda_compute(X_train, X_test, y_train, i)
-        #if i == 2: plot_scatter(X_train_m, X_test_m, 'LDA')
-        y_pred_m = algo.rand_forest(X_train_m, y_train, X_test_m, y_test, name, i)
-        print(" Random Forest for LDA with {0} components: {1}".format(i, f1_matrix(y_test,y_pred_m)))
+        if i == 2: plot_scatter(X_train_m, X_test_m, 'LDA')
+	random_for(X_train_m, y_train, X_test_m, y_test, name, i)
 
 else:
     print("Incorrect option selected")
