@@ -1,132 +1,152 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jun 26 10:53:45 2018
 
-@author: ankit
-"""
+# coding: utf-8
 
-def f1_matrix(y_test, y_pred): #confusion matrix
-    from sklearn.metrics import confusion_matrix
-    cm = confusion_matrix(y_test, y_pred)
-    accuracy = float(sum(np.diag(cm))*100.0/1212)
-    return accuracy
-
-def plot_scatter(X_tr, X_te, name): #scatter plots for 2 dimensions (train and test dataset)
-    #print(pca.explained_variance_ratio_)
-    algo.scatter_plot(X_tr, name, 'train')
-    algo.scatter_plot(X_te, name, 'test')
-
-def random_for(X_train_m, y_train, X_test_m, y_test, name, i):
-	y_pred_m = algo.rand_forest(X_train_m, y_train, X_test_m, y_test, name, i)
-        print(" Random Forest for {0} with {1} components: {2}".format(name, i, f1_matrix(y_test,y_pred_m)))
+# In[ ]:
 
 
-#importing libraries
-import numpy as np
-import pandas as pd
+from ml_models import supervised, unsupervised, dim_red
+from data_cleaning import preprocessing
+from visualization import plots
+from sklearn.metrics import accuracy_score, confusion_matrix, homogeneity_completeness_v_measure
 import matplotlib.pyplot as plt
-from ml import Algorithms
-from labelling import Classify
+import numpy as np
+get_ipython().run_line_magic('matplotlib', 'inline')
 
-path = '/proj/SMACK/sv-benchmarks/c/'
-classify = Classify(path)
-classify.readRE()
-algo = Algorithms()
 
-#loading data
-df_2a = pd.read_csv('f_tool2a.csv') #<tool 1> - features sent by Yulia, SVCOMP 2015
-df_2b = pd.read_csv('f_tool2b.csv') #<tool 2> - features generated using Yulia's tool, SVCOMP 2017
-#dl = pickle.load(open('categoryLabels.txt','r'))
+# In[ ]:
 
-y = pd.read_csv('label.csv',sep=' ',names=['filename','labels'])
 
-#assigning column names to the dataframes
-df_2a.columns = ['filename','1A','2B','3C','4D','5E','6F','7G','8H','9I','10J',
-                 '11K','12L','13M','14N',
-                   '15O','16P','17Q','18R','19S','20T']
-df_2b.columns = ['filename','A1','B2','C3','D4','E5','F6','G7','H8','I9','J10',
-                 'K11','12L','13M']
+dataset = preprocessing().load_data()
+dataset = preprocessing().missing_data(dataset)
 
-#formatting the filename column
-#df_2a has 2 kinds of patterns in filename column
-df_2a.filename = df_2a.filename.str.replace('../../c/',path)
-df_2a.filename = df_2a.filename.str.replace('../../../data/c/',path)
-df_2b.filename = df_2b.filename.str.replace('../../../data/c/',path)
 
-# Taking care of missing data
-from sklearn.preprocessing import Imputer
-imputer = Imputer(missing_values = 'NaN', strategy = 'mean', axis = 0)
-imputer = imputer.fit(df_2a.iloc[:, 1:])
-df_2a.iloc[:, 1:] = imputer.transform(df_2a.iloc[:, 1:])
-imputer1 = imputer.fit(df_2b.iloc[:, 1:])
-df_2b.iloc[:, 1:] = imputer1.transform(df_2b.iloc[:, 1:])
+# In[ ]:
 
-df_merged = pd.merge(df_2a,df_2b,on='filename',how='inner') #merging features from 2a, 2b
 
-dataset2 = pd.merge(df_merged,y,on='filename',how='inner') #creating datasets for ml. Merge features with labels
-dataset2.to_csv(open('trainXY.csv','w'), sep=' ', index = False) #dumping the features and labels for future loading
+X = dataset.iloc[:,1:-1].values #features matrix
+y = dataset.iloc[:,-1].values #labels vector
 
-dataset2_X = dataset2.iloc[:,1:-1].values #features matrix
-dataset2_y = dataset2.iloc[:,-1].values #labels vector
 
-#Automatic Backward Elimination
-(m,n) = dataset2_X.shape
-#print(m,n)
-dataset2_X = np.append(arr = np.ones((m, 1)).astype(int), values = dataset2_X, axis = 1)
-SL = 0.05
-X_opt = dataset2_X[:,0:n]
-X_Modeled = algo.backwardElimination(X_opt, SL, dataset2_y, m, n)
+# In[ ]:
+
 
 # Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(dataset2_X, dataset2_y,
-                                                    test_size = 0.2)
+X_train, X_test, y_train, y_test = train_test_split(X, y,test_size = 0.2, random_state = 10)
 
-# Feature Scaling
-from sklearn.preprocessing import StandardScaler
-sc = StandardScaler()
-X_train = sc.fit_transform(X_train)
-X_test = sc.transform(X_test)
 
-#Random Forest Algorithm
-y_pred = algo.rand_forest(X_train, y_train, X_test)
+# In[ ]:
 
-(m,n) = X_test.shape
 
-from sklearn.metrics import confusion_matrix
-cm = confusion_matrix(y_test, y_pred)
+#normalize the dataset
+X_train, X_test = preprocessing().feature_scaling(X_train, X_test)
 
-print(" Random Forest for original dataset: {0}".format(float(sum(np.diag(cm))*100.0/m)))
 
-cm_df = pd.DataFrame(cm)
-#print(cm_df)
+# In[ ]:
 
-'''
-Linear Dimensionality reduction to see if Random Forest does a good job.
-The data is linearly separable.
-'''
-print("Choose from: \n 1. PCA \n 2. LDA")
-choice = int(input("Enter your choice: "))
 
-if choice == 1:
-    # PCA - 90% accuracy
-    name = 'PCA'
-    for i in range(1,3):
-        X_train_m, X_test_m = algo.pca_compute(X_train, X_test, i)
-        if i == 2: plot_scatter(X_train_m, X_test_m, 'PCA')
-	random_for(X_train_m, y_train, X_test_m, y_test, name, i)       
-	
-elif choice == 2:
-    #LDA - 95% accuracy
-    name = 'LDA'
-    for i in range(1,3):
-        X_train_m, X_test_m = algo.lda_compute(X_train, X_test, y_train, i)
-        if i == 2: plot_scatter(X_train_m, X_test_m, 'LDA')
-	random_for(X_train_m, y_train, X_test_m, y_test, name, i)
+mode = int(input("1. PCA \n 2. LDA \n 3. Supervised Learning \n 4. Unsupervised Learning \n"))
+mode_2 = mode
 
-else:
-    print("Incorrect option selected")
 
-algo.clustering(X_train, 'Input') #K-Means on actual data
-algo.clustering(X_train_m, name) #K-Means on PCA/ LDA dataset
+# In[ ]:
+
+
+if mode == 1 or mode == 2:
+    obj_model = dim_red(X_train, X_test)
+    num_of_dim = int(input("Enter number of dimensions to feed="))
+    if mode == 1:
+        alg = 'PCA'
+        X_train, X_test, variance_ratio = obj_model.pca_compute(num_of_dim)
+    elif mode == 2:
+        alg = 'LDA'
+        X_train, X_test, variance_ratio = obj_model.lda_compute(num_of_dim, y_train)
+    
+    if num_of_dim == 2:
+        obj_viz = plots(X_test,alg+'1', alg+'2')
+        obj_viz.scatter_plot()
+        
+    mode = int(input("2. Supervised Learning \n 3. Unsupervised Learning \n"))
+
+
+# In[ ]:
+
+
+if mode == 2:
+    obj_model = supervised(X_train, y_train, X_test)
+    choice = int(input("which model do you want to run \n 1.KNN \n 2. Logistic regression \n 3. Random Forest \n 4. SVM \n 5. ANN \n"))
+    if choice == 1:
+        algo = 'knn'
+        y_pred_list, param = obj_model.knn(6)
+    elif choice == 2:
+        algo = 'logit'
+        y_pred_list, param = obj_model.log_reg()
+    elif choice == 3:
+        algo = 'random forest';
+        y_pred_list, param = obj_model.rand_forest()
+        param_pair = param
+        param = [x[0]+x[1] for x in param_pair]
+            
+    elif choice == 4:
+        algo = 'SVM'
+        y_pred_list, param = obj_model.svm()
+        
+    accuracy = []
+    
+    for i in range(len(y_pred_list)):
+        accuracy.append(accuracy_score(y_test,y_pred_list[i])*100)
+
+    i = accuracy.index(max(accuracy))
+    best_vals = param[i]
+    print("The algorithm is most optimized for {0}".format(best_vals))
+        
+    obj_viz = plots(X_train)
+    obj_viz.normal_plot(param,accuracy, 'Accuracy for '+algo, 'parameters', 'accuracy')
+
+
+# In[ ]:
+
+
+if mode == 3:
+    X, X_te = preprocessing().feature_scaling(X)
+    
+    if mode_2 == 1 and num_of_dim == 2:
+        if mode_2 == 1:
+            X, X_test, variance_ratio = dim_red(X).pca_compute(num_of_dim)
+        else:
+            X, X_test, variance_ratio = dim_red(X).lda_compute(num_of_dim, y)
+            
+    #plots(X,alg+'1',alg+'2').scatter_plot('whole (original)', y, 'nn')
+    
+    print(variance_ratio)
+    
+    obj_model = unsupervised(X, y)
+    
+    choice = int(input("Which model do you want to run \n 1. K-Means \n 2. Hierarchical \n 3. Spectral \n"))
+    no_of_clusters = [i for i in range(1,12)];
+    if choice == 1:
+        sub_choice = int(input("Which strategy do you want to use \n 1. Selective cluster centers \n 2. k-means++ \n"))
+        if sub_choice == 1:
+            center_filtered = np.vstack((X[y == 0][:1], X[y == 1][:1], X[y == 2][:1], X[y == 3][:1],
+                                    X[y == 4][:1], X[y == 5][:1], X[y == 6][:1], X[y == 7][:1],
+                                   X[y == 8][:1], X[y == 9][:1], X[y == 10][:1], X[y == 11][:1]))
+            strategy = np.array(center_filtered)
+            #print(strategy[0:2].reshape(2,-2))
+            #print(shape(strategy[0]))
+        else: strategy = 'k-means++';
+        algo = 'KMeans'
+        y_pred, wcss = obj_model.kmean(strategy)
+        obj_viz = plots(X_train)
+        obj_viz.normal_plot(no_of_clusters,wcss, 'WCSS for '+algo, 'Number of Clusters', 'WCSS')
+            
+    elif choice == 2:
+        algo = 'Agglomerative'
+        y_pred = obj_model.agglomerative()
+        
+    else:
+        algo = 'Spectral'
+        y_pred = obj_model.spectral()
+
+    plots(X,alg+'1',alg+'2').scatter_plot('whole (original)', y, algo)
+    plots(X,alg+'1',alg+'2').scatter_plot('whole (predicted)', y_pred, algo)
+

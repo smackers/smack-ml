@@ -7,6 +7,7 @@ Created on Sat Jun 30 14:50:05 2018
 """
 # Importing the libraries
 import numpy as np
+#%matplotlib inline
 import matplotlib.pyplot as plt
 import pandas as pd
 
