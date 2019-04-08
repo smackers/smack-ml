@@ -114,9 +114,10 @@ class unsupervised(object):
             kmeans = KMeans(n_clusters=i, init=strategy[i], max_iter=100, n_init = 10,random_state=0).fit(self.f)
             y_pred = kmeans.labels_
             wcss.append(kmeans.inertia_)
+            c_center = kmeans.cluster_centers_
         
         print(homogeneity_completeness_v_measure(self.l,y_pred))
-        return y_pred, wcss
+        return y_pred, wcss, c_center
     
     def agglomerative(self, i=12):
         from sklearn.cluster import AgglomerativeClustering
@@ -133,6 +134,7 @@ class unsupervised(object):
             spc = SpectralClustering(n_clusters=i, affinity='nearest_neighbors', n_neighbors=8,
                                     assign_labels='discretize', random_state=0).fit(self.f)
             y_pred = spc.labels_
+            c_center = spc.
 
         print(homogeneity_completeness_v_measure(self.l,y_pred))
         return y_pred
