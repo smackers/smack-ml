@@ -21,8 +21,8 @@ class preprocessing(object):
             #<tool 2> - features generated using Yulia's tool, SVCOMP 2017
             X_2b = pd.read_csv('f_tool2b.csv')
             
-            X_2a.columns = ['filename','1A','2B','3C','4D','5E','6F','7G','8H','9I','10J','11K','12L','13M',
-                            '14N','15O','16P','17Q','18R','19S','20T']
+            X_2a.columns = ['filename','alloc_size','array_index','bitvector','boolean','branc_cond','char_def','char_use','const_assign','counter','file_def','file_use','input','linear',
+                            'loop_bound','loop_iterator','mode','offset','synt_const','unresolved_assign','used_in_arithm']
             X_2b.columns = ['filename','A1','B2','C3','D4','E5','F6','G7','H8','I9','J10','K11','L12','M13']
             
             #formatting the filename column
