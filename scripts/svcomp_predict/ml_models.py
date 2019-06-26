@@ -134,7 +134,7 @@ class unsupervised(object):
             spc = SpectralClustering(n_clusters=i, affinity='nearest_neighbors', n_neighbors=8,
                                     assign_labels='discretize', random_state=0).fit(self.f)
             y_pred = spc.labels_
-            c_center = spc.
+            #c_center = spc.
 
         print(homogeneity_completeness_v_measure(self.l,y_pred))
         return y_pred

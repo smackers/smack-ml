@@ -8,67 +8,63 @@ from ml_models import supervised, unsupervised, dim_red
 from data_cleaning import preprocessing
 from visualization import plots
 import _pickle as pickle
+import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, confusion_matrix, homogeneity_completeness_v_measure
 import matplotlib.pyplot as plt
 import numpy as np
-get_ipython().run_line_magic('matplotlib', 'inline')
-
-
-# In[2]:
-
+#get_ipython().run_line_magic('matplotlib', 'inline')
 
 dataset = preprocessing().load_data()
 dataset = preprocessing().missing_data(dataset)
 dataset.to_csv('dataset.csv')
 
-
-# In[3]:
-
-
 X = dataset.iloc[:,1:-1].values #features matrix
 y = dataset.iloc[:,-1].values #labels vector
-
-
-# In[4]:
-
 
 # Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y,test_size = 0.2, random_state = 10)
 
-
-# In[5]:
-
-
 #normalize the dataset
 X_train, X_test = preprocessing().feature_scaling(X_train, X_test)
 
 
+#Achieve max retention/ variance ratio around dim = 21. So we can easily perform
+#dim reduction to 21 without loosing any information or performance of the ML
+#algorithm in later stages
+obj = dim_red(X_train, X_test)
+
+retention = []
+dimensions = [i for i in range(1, len(dataset.columns)-1)]
+for i in range(1,len(dataset.columns)-1):
+    X_train, X_test, variance_ratio = obj.pca_compute(i)
+    retention.append(sum(variance_ratio))
+    
+plt.plot(dimensions, retention)
+#plt.title(string_title)
+plt.xlabel('# of dimensions')
+plt.ylabel('variance ratio')
+plt.show()
 # In[6]:
 
 
 mode = int(input("Choose an algorithm \n"
-                "1. PCA \n 2. LDA \n 3. Supervised Learning \n 4. Unsupervised Learning \n"))
-mode_2 = mode
+                "1. PCA \n 2. Supervised Learning \n 3. Unsupervised Learning \n"))
 alg = ''
 
-
-# In[7]:
-
-
-if mode == 1 or mode == 2:
+if mode == 1:
     obj_model = dim_red(X_train, X_test)
-    num_of_dim = int(input("Enter number of dimensions to feed="))
-    if mode == 1:
-        alg = 'PCA'
-        X_train, X_test, variance_ratio = obj_model.pca_compute(num_of_dim)
-    elif mode == 2:
-        alg = 'LDA'
-        X_train, X_test, variance_ratio = obj_model.lda_compute(num_of_dim, y_train)
-        
-    dataset.to_csv('dataset_pca.csv')
-    mode = int(input("2. Supervised Learning \n 3. Unsupervised Learning \n"))
-
+    alg = 'PCA'
+    #As concluded above, 21 dims are enough to retain most of the information
+    #captured by the feature vectors of size 33
+    X_train, X_test, variance_ratio = obj_model.pca_compute(21)
+    
+    print(sum(variance_ratio))
+    #dataset.to_csv('dataset_pca.csv')
+#Add the code for visualizing PCA in 2D for 21 dims input and then
+#apply t-SNE on PCA (21 dims) and visualize the results. t-SNE is able to capture
+#non-linear relationships between features while performing dim reduction so 
+#expected results should be better than PCA (although t-SNE is very slow)
 
 # In[8]:
 
