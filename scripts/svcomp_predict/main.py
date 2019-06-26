@@ -60,7 +60,7 @@ if mode == 1:
     X_train, X_test, variance_ratio = obj_model.pca_compute(21)
     
     print(sum(variance_ratio))
-    #dataset.to_csv('dataset_pca.csv')
+    dataset.to_csv('dataset_pca.csv')
 #Add the code for visualizing PCA in 2D for 21 dims input and then
 #apply t-SNE on PCA (21 dims) and visualize the results. t-SNE is able to capture
 #non-linear relationships between features while performing dim reduction so 
