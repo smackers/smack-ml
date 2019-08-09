@@ -19,14 +19,14 @@ class preprocessing(object):
             #<tool 1> - features sent by Yulia, SVCOMP 2015
             X_2a = pd.read_csv('f_tool2a.csv', header='infer')
             #<tool 2> - features generated using Yulia's tool, SVCOMP 2017
-            X_2b = pd.read_csv('f_tool2b.csv')
+            X_2b = pd.read_csv('f_tool2b.csv', header='infer')
 
             """ X_2a.columns = ['filename','alloc_size','array_index','bitvector',
             'boolean','branc_cond','char_def','char_use','const_assign','counter',
             'file_def','file_use','input','linear','loop_bound','loop_iterator',
             'mode','offset','synt_const','unresolved_assign','used_in_arithm']
             """
-            X_2b.columns = ['filename','A1','B2','C3','D4','E5','F6','G7','H8','I9','J10','K11','L12','M13']
+            #X_2b.columns = ['filename','A1','B2','C3','D4','E5','F6','G7','H8','I9','J10','K11','L12','M13']
 
             #formatting the filename column
             #df_2a has 2 kinds of patterns in filename column
