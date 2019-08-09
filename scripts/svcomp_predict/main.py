@@ -1,22 +1,25 @@
 
 # coding: utf-8
 
-# In[1]:
-
-
 from ml_models import supervised, unsupervised, dim_red
 from data_cleaning import preprocessing
-from visualization import plots
-import _pickle as pickle
+#from visualization import plots
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, confusion_matrix, homogeneity_completeness_v_measure
-import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
+from sklearn.preprocessing import MinMaxScaler
 #get_ipython().run_line_magic('matplotlib', 'inline')
 
+scaler = MinMaxScaler()
 dataset = preprocessing().load_data()
 dataset = preprocessing().missing_data(dataset)
 dataset.to_csv('dataset.csv')
+nd = dataset
+nd[dataset.iloc[:,1:-1].columns] = scaler.fit_transform(dataset.iloc[:,1:-1][dataset.iloc[:,1:-1].columns])
+
+print(type(nd))
+print(nd.shape)
 
 X = dataset.iloc[:,1:-1].values #features matrix
 y = dataset.iloc[:,-1].values #labels vector
@@ -28,10 +31,20 @@ X_train, X_test, y_train, y_test = train_test_split(X, y,test_size = 0.2, random
 #normalize the dataset
 X_train, X_test = preprocessing().feature_scaling(X_train, X_test)
 
+#checking correlation matrix after feature scaling
+corr = nd.corr()
 
-#Achieve max retention/ variance ratio around dim = 21. So we can easily perform
-#dim reduction to 21 without loosing any information or performance of the ML
-#algorithm in later stages
+ax = sns.heatmap(corr, vmin=-1, vmax=1, center=0,
+                 cmap=sns.diverging_palette(20, 220, n=200),square=True)
+ax.set_xticklabels(ax.get_xticklabels(),rotation=45,horizontalalignment='right')
+
+
+"""
+Achieve max retention/ variance ratio around dim = 21. So we can easily perform
+dim reduction to 21 without loosing any information or performance of the ML
+algorithm in later stages
+"""
+
 obj = dim_red(X_train, X_test)
 
 retention = []
@@ -41,33 +54,31 @@ for i in range(1,len(dataset.columns)-1):
     retention.append(sum(variance_ratio))
     
 plt.plot(dimensions, retention)
-#plt.title(string_title)
+plt.title('PCA')
 plt.xlabel('# of dimensions')
 plt.ylabel('variance ratio')
 plt.show()
-# In[6]:
 
-
+"""
 mode = int(input("Choose an algorithm \n"
                 "1. PCA \n 2. Supervised Learning \n 3. Unsupervised Learning \n"))
 alg = ''
 
 if mode == 1:
-    obj_model = dim_red(X_train, X_test)
-    alg = 'PCA'
-    #As concluded above, 21 dims are enough to retain most of the information
-    #captured by the feature vectors of size 33
-    X_train, X_test, variance_ratio = obj_model.pca_compute(21)
-    
-    print(sum(variance_ratio))
-    dataset.to_csv('dataset_pca.csv')
+"""
+obj_model = dim_red(X_train, X_test)
+alg = 'PCA'
+#As concluded above, 21 dims are enough to retain most of the information
+#captured by the feature vectors of size 33
+X_train, X_test, variance_ratio = obj_model.pca_compute(21)
+
+print(sum(variance_ratio))
+corr = 
+dataset.to_csv('dataset_pca.csv')
 #Add the code for visualizing PCA in 2D for 21 dims input and then
 #apply t-SNE on PCA (21 dims) and visualize the results. t-SNE is able to capture
 #non-linear relationships between features while performing dim reduction so 
 #expected results should be better than PCA (although t-SNE is very slow)
-
-# In[8]:
-
 
 if mode == 2:
     obj_model = supervised(X_train, y_train, X_test)
@@ -96,13 +107,11 @@ if mode == 2:
     i = accuracy.index(max(accuracy))
     best_vals = param[i]
     print("The algorithm is most optimized for {0}".format(best_vals))
+    
+    #Add code for AUC ROC curve
         
     obj_viz = plots(X_train)
     obj_viz.normal_plot(param,accuracy, 'Accuracy for '+algo, 'parameters', 'accuracy')
-
-
-# In[9]:
-
 
 if mode == 3:
     X_train, X_test = preprocessing().feature_scaling(X)
@@ -143,23 +152,11 @@ if mode == 3:
         algo = 'Spectral'; status = 0;
         y_pred = obj_model.spectral()
 
-
-# In[ ]:
-
-
 print(alg, algo)
 print(len(alg))
 
-
-# In[ ]:
-
-
 if len(alg)>0:
     plots(X_train,alg).scatter_plot('entire')
-
-
-# In[ ]:
-
 
 plots(X_train,alg).sc_plot_with_label(y, algo, kcenter, status)
 plots(X_train,alg).sc_plot_with_label(y_pred, algo, kcenter, status)
